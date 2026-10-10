@@ -1,0 +1,14 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import {editorialPosts} from '../../lib/editorial';
+export function getStaticPaths(){return ['lavage-gobelets','location-gobelets','location-vaisselle'].map(service=>({params:{service}}));}
+const entries={
+'lavage-gobelets': ['Lavage de gobelets réutilisables','Des milliers de gobelets. Une charge en moins.','Lavage, séchage, comptage et conditionnement dès 3 000 gobelets par événement. Préparons vos dates, vos volumes et vos retours.','lavage'],
+'location-gobelets':['Location de gobelets pour grands événements','Votre événement voit grand. Votre parc aussi.','Vous n’avez pas de parc ou souhaitez compléter le vôtre ? Organisons les formats, les quantités et leur retour au lavage, selon les disponibilités.','gobelets'],
+'location-vaisselle':['Location de vaisselle événementielle','Du premier verre au dernier couvert.','Plastique réutilisable, inox, porcelaine et verrerie : réunissez la location et le lavage. Minimum de commande de 1 500 € pour la location et le lavage, transport en supplément.','vaisselle']
+};
+const relatedSlugs:Record<string,string[]>={'lavage-gobelets':['lavage-gobelets-festival','prix-lavage-gobelets','collecte-livraison-gobelets-evenement'],'location-gobelets':['combien-gobelets-prevoir-evenement','acheter-ou-louer-gobelets-reutilisables','parc-gobelets-mutualise-collectivite'],'location-vaisselle':['location-vaisselle-evenement-guide','collecte-livraison-gobelets-evenement','rse-gobelets-reemploi-indicateurs']};
+const guides=relatedSlugs[Astro.params.service!].map(slug=>editorialPosts.find(p=>p.slug===slug)!);
+const [title,headline,intro,need]=entries[Astro.params.service as keyof typeof entries];
+---
+<Layout title={`${title} | La Plonge s’Adapte`} description={intro}><main class="section impact-page"><p class="eyebrow">HAUTE-SAVOIE · SAVOIE · AIN</p><h1>{headline}</h1><p class="section-intro">{intro}</p><h2>{title}</h2><p class="prose">Un événement, plusieurs dates ou toute une saison : nous préparons une proposition adaptée à votre calendrier. La collecte et la livraison peuvent être organisées avec nos partenaires de transport et sont chiffrées séparément.</p><h2>Un calendrier clair avant de commencer.</h2><p class="prose">Indiquez les dates, le lieu et les volumes estimés. Nous définissons ensemble les modalités de prise en charge et de remise à disposition. Pour les projets de plus de 100 000 gobelets, nous étudions également les possibilités au-delà des Savoies et de l’Ain.</p><a class="button" href={`/devis/?besoin=${need}`}>Préparer mon devis ↗</a></main><section class="section related-guides"><p class="eyebrow">LES GUIDES POUR PRÉPARER VOTRE PRESTATION</p><div class="cards">{guides.map(p=><a class="solution-card" href={`/blog/${p.slug}/`}><span class="eyebrow">{p.category}</span><h3>{p.title}</h3><span class="card-cta">Lire le guide ↗</span></a>)}</div></section></Layout>

@@ -68,3 +68,9 @@ Automatisation recommandée ensuite : calendrier éditorial → génération de 
 
 ### État réel de Supabase LPSA 2
 Le schéma a été appliqué au projet `bxhnbrabukdsefarbjtd` via le SQL Editor, dans une transaction. L’application reste en démonstration locale tant que les variables privées `.env.example` ne sont pas renseignées. Les accès souhaités sont accueil@laplongesadapte.com et vivien@laplongesadapte.com. `scripts/provision-admins.mjs` permet de les créer sans envoyer de message, après configuration privée des identifiants et du mot de passe initial. Ces comptes ne sont pas encore créés. Le mode démonstration est interdit sur les déploiements.
+
+## Articles de lancement
+
+Dix guides originaux ont été ajoutés au blog, à l’accueil, aux pages de prestations et aux pages RSE/OETH. Sources Markdown et métadonnées : `src/content/blog/`. Les dix enregistrements ont également été insérés dans Supabase LPSA 2. Le seed `supabase/seeds/initial-blog.sql` préserve les slugs existants.
+
+En l’absence de configuration de base, seules les lectures publiques du blog utilisent cette collection versionnée. Dès que Supabase est configuré, les données du CMS font autorité ; une erreur de base ou une dépublication n’active pas de repli vers une ancienne version. Ce mécanisme ne concerne pas les leads et n’ouvre aucun accès administrateur. Voir `docs/editorial/README.md`.

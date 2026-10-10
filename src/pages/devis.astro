@@ -1,0 +1,9 @@
+---
+import Layout from '../layouts/Layout.astro';
+import QuoteForm from '../components/QuoteForm';
+import {demo} from '../lib/server';
+export const prerender=false;
+---
+<Layout title="Préparer votre événement | La Plonge s’Adapte" privatePage>
+  <section class="quote-layout"><aside><p class="eyebrow">ON CONSTRUIT LA SUITE ENSEMBLE</p><h1>Parlons de<br /><em>votre événement.</em></h1><p>Commencez avec votre besoin et un moyen de vous joindre. Les détails peuvent venir ensuite.</p><div class="quote-reassurance"><span>01 — Vos coordonnées</span><span>02 — Votre projet, à votre rythme</span><span>03 — Une organisation à préparer ensemble</span></div><p class="help">Vous préférez en parler ?<br /><a href="tel:+33787896760">07 87 89 67 60</a></p></aside><QuoteForm client:load demo={demo} /></section>
+</Layout>

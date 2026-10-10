@@ -1,0 +1,7 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BlogEditor from '../../components/BlogEditor';
+import {demo} from '../../lib/server';
+export const prerender=false;
+---
+<Layout title="Publication des guides | La Plonge s’Adapte" privatePage><section class="admin-shell"><p class="eyebrow">ESPACE ÉDITORIAL</p><h1>Des guides utiles.<br /><em>Une publication maîtrisée.</em></h1><BlogEditor client:load demo={demo} url={import.meta.env.PUBLIC_SUPABASE_URL||''} publishableKey={import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY||''} /></section></Layout>

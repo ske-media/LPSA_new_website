@@ -1,0 +1,32 @@
+---
+import '../styles/global.css';
+import '@fontsource/dm-sans/latin-400.css';
+import '@fontsource/dm-sans/latin-500.css';
+import '@fontsource/dm-sans/latin-700.css';
+import '@fontsource/manrope/latin-500.css';
+interface Props { title:string; description?:string; privatePage?:boolean; }
+const {title,description='Lavage et location de gobelets et de vaisselle pour vos événements. Collecte et livraison organisées en Haute-Savoie, Savoie et Ain.',privatePage=false}=Astro.props;
+const canonical=new URL(Astro.url.pathname,Astro.site);
+---
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title><meta name="description" content={description} />
+    <meta name="robots" content={privatePage?'noindex, nofollow':'index, follow'} />
+    {!privatePage && <link rel="canonical" href={canonical} />}
+    <meta name="theme-color" content="#082F40" />
+    <link rel="icon" href="/favicon-flux.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon-flux.png" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Aller au contenu</a>
+    <header class="header">
+      <a class="brand" href="/" aria-label="La Plonge s’Adapte — accueil"><img class="brand-logo" src="/brand/flux/logo-blanc.svg" alt="La Plonge s’Adapte" width="410" height="116" fetchpriority="high" /></a>
+      <nav aria-label="Navigation principale"><a href="/#solutions">Nos solutions</a><a href="/rse/">RSE & impact</a><a href="/blog/">Les guides</a><a href="/devis/" class="button small">Parlons de votre événement <span aria-hidden="true">↗</span></a></nav>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="footer"><div><a class="footer-brand" href="/" aria-label="La Plonge s’Adapte — accueil"><img class="brand-logo" src="/brand/flux/logo-blanc.svg" alt="La Plonge s’Adapte" width="410" height="116" loading="lazy" /></a><p>Les événements passent.<br />Les bonnes habitudes restent.</p></div><div><p class="eyebrow">ON EN PARLE ?</p><a href="mailto:accueil@laplongesadapte.com">accueil@laplongesadapte.com</a><br /><a href="tel:+33787896760">07 87 89 67 60</a><p>Neydens · Haute-Savoie</p></div><div><a href="/blog/">Guides & conseils</a><br /><a href="/confidentialite/">Vos données</a><br /><a href="/admin/">Espace équipe</a><p>Entreprise adaptée</p></div></footer>
+  <a class="button floating-quote" href="/devis/">Préparer mon événement ↗</a>
+</body>
+</html>

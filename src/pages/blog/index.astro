@@ -1,0 +1,15 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import {listPosts} from '../../lib/blog-server';
+import type {Post} from '../../lib/blog';
+export const prerender=false;
+let posts:Post[]=[],unavailable=false;try{posts=await listPosts(true);}catch{unavailable=true;Astro.response.status=503;}
+const categories=['Gobelets','Guides','Collectivités','Vaisselle','RSE'];
+const requested=Astro.url.searchParams.get('categorie')||'';
+const category=categories.includes(requested)?requested:'';
+const visible=category?posts.filter(p=>p.category===category):posts;
+Astro.response.headers.set('Cache-Control','no-store');
+---
+<Layout title="Guides et conseils événementiels | La Plonge s’Adapte" description="Lavage de gobelets, location de vaisselle, transport, parcs partagés et RSE : des guides pratiques pour préparer vos grands événements." privatePage={unavailable}><section class="section blog-index"><p class="eyebrow">LES GUIDES DE LA PLONGE S’ADAPTE</p><h1>Le prochain événement<br /><em>se prépare ici.</em></h1><p class="section-intro">Des méthodes, des exemples et les bonnes questions à poser avant de réserver votre prestation.</p>
+<nav class="blog-categories" aria-label="Catégories des guides"><a href="/blog/" aria-current={!category?'page':undefined}>Tous les guides</a>{categories.map(c=><a href={`/blog/?categorie=${encodeURIComponent(c)}`} aria-current={category===c?'page':undefined}>{c}</a>)}</nav>
+{unavailable?<p class="notice">Les articles sont temporairement indisponibles.</p>:visible.length===0?<p class="notice">Les guides de cette catégorie arrivent bientôt.</p>:<div class="cards">{visible.map(p=><a href={`/blog/${p.slug}/`} class="solution-card blog-card"><span class="eyebrow">{p.category}</span><h2>{p.title}</h2><p>{p.excerpt}</p><span class="blog-card-meta">{Math.max(1,Math.ceil(p.content_markdown.split(/\s+/).length/220))} min de lecture</span><span class="card-cta">Lire le guide ↗</span></a>)}</div>}</section></Layout>

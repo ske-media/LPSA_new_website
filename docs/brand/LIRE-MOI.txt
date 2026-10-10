@@ -1,0 +1,29 @@
+LA PLONGE S’ADAPTE — IDENTITÉ VISUELLE
+Création du 6 octobre 2026.
+
+LE SIGNE
+Le contour évasé rappelle le gobelet réutilisable. Le trait supérieur forme une vague : l’eau et le lavage. L’ouverture du tracé suggère un cycle qui continue. Un signe simple, sans détail fragile, avec une typographie calme et lisible.
+
+FICHIERS
+logo-petrole : signature pour fond clair.
+logo-blanc : signature monochrome pour fond sombre.
+logo-bicolore : signature claire avec symbole eau, pour le site.
+logo-noir : impression en une couleur.
+symbole-* : symbole seul pour icône, marquage ou avatar.
+SVG : fichiers vectoriels, texte converti en tracés, transparents.
+PNG : fichiers transparents, logos de 3200 pixels, symboles de 1200 pixels.
+La-Plonge-sAdapte-planche.png : présentation et palette.
+
+COULEURS
+Bleu pétrole #082F40. Eau #79C8D3. Blanc #EEF8F8.
+
+USAGE
+Conserver les proportions. Ne pas ajouter d’ombre ni de dégradé au logo.
+Laisser autour une marge minimale d’environ la moitié de la largeur du symbole.
+Signature complète : largeur conseillée de 150 px minimum à l’écran.
+En dessous, utiliser le symbole seul, lisible dès 24 px.
+Le blanc ou la version bicolore s’utilise sur fond sombre ; le pétrole ou le noir sur fond clair.
+
+TYPOGRAPHIE
+Manrope SemiBold, sous licence SIL Open Font License (jointe).
+Les SVG utilisent des tracés et n’exigent aucune installation de police.

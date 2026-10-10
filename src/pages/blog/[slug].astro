@@ -1,0 +1,16 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import type {Post} from '../../lib/blog';
+import {getPublicPost,listPosts,renderMarkdown} from '../../lib/blog-server';
+export const prerender=false;
+let post=null,error=false;try{post=await getPublicPost(Astro.params.slug!);}catch{error=true;}
+if(!post)Astro.response.status=error?503:404;
+Astro.response.headers.set('Cache-Control','no-store');
+let related:Post[]=[];if(post){try{related=(await listPosts(true)).filter(p=>p.slug!==post.slug).sort((a,b)=>Number(b.category===post.category)-Number(a.category===post.category)).slice(0,3);}catch{/* The article remains readable if recommendations fail. */}}
+const minutes=post?Math.max(1,Math.ceil(post.content_markdown.split(/\s+/).length/220)):0;
+---
+<Layout title={post?(post.seo_title||post.title):'Article indisponible | La Plonge s’Adapte'} description={post?.seo_description||post?.excerpt} privatePage={!post}>
+  {post && <script type="application/ld+json" set:html={JSON.stringify({"@context":"https://schema.org","@type":"BlogPosting",headline:post.title,description:post.excerpt,datePublished:post.published_at,dateModified:post.updated_at,author:{"@type":post.author_name==='La Plonge s’Adapte'?"Organization":"Person",name:post.author_name},publisher:{"@type":"Organization",name:"La Plonge s’Adapte"},mainEntityOfPage:`https://laplongesadapte.com/blog/${post.slug}/`,...(post.cover_url?{image:post.cover_url}:{})}).replace(/</g,"\u003c")} />}
+  {post?<article class="section blog-article"><a href="/blog/" class="text-link">← Tous les guides</a><p class="eyebrow">{post.category || 'Guides'} · LE GUIDE ÉVÉNEMENTIEL</p><h1>{post.title}</h1><p class="article-excerpt">{post.excerpt}</p><p class="article-meta">{post.author_name} · <time datetime={post.published_at!}>{new Date(post.published_at!).toLocaleDateString('fr-FR')}</time> · {minutes} min de lecture</p>{post.cover_url&&<img class="article-cover" src={post.cover_url} alt={post.cover_alt} loading="eager" width="1600" height="1000" />}<div class="prose" set:html={renderMarkdown(post.content_markdown)} /><div class="article-cta"><h2>Passons de votre lecture<br /><em>à votre événement.</em></h2><a class="button" href="/devis/">Préparer ma demande ↗</a></div></article>:<section class="section legal"><h1>{error?'Article temporairement indisponible.':'Cet article n’est pas disponible.'}</h1><a href="/blog/">Revenir aux guides</a></section>}
+  {post&&related.length>0&&<section class="section related-guides"><p class="eyebrow">POUR PRÉPARER LA SUITE</p><h2>À lire aussi.</h2><div class="cards">{related.map(p=><a class="solution-card" href={`/blog/${p.slug}/`}><span class="eyebrow">{p.category}</span><h3>{p.title}</h3><span class="card-cta">Lire le guide ↗</span></a>)}</div></section>}
+</Layout>
