@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>Formulaires — La Plonge s’Adapte</title>
+</head>
+<body>
+<!--
+  Déclaration statique lue par Netlify Forms au déploiement.
+  La page /devis/ est rendue côté serveur : son formulaire React n’est pas visible
+  du robot Netlify, et un POST vers une route serveur n’est pas intercepté.
+  src/components/QuoteForm.tsx envoie donc ses données ici. Garder les champs synchronisés.
+-->
+<form name="devis" method="POST" data-netlify="true" netlify-honeypot="website" hidden>
+  <input type="hidden" name="form-name" value="devis">
+  <input name="etape">
+  <input name="reference">
+  <input name="besoin">
+  <input name="nom">
+  <input name="email" type="email">
+  <input name="telephone">
+  <input name="organisation">
+  <input name="evenement">
+  <input name="ville">
+  <input name="code-postal">
+  <input name="date">
+  <input name="volume">
+  <input name="volume-annuel">
+  <input name="transport">
+  <textarea name="message"></textarea>
+  <input name="website">
+</form>
+</body>
+</html>

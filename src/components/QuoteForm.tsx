@@ -1,6 +1,20 @@
 import {useEffect,useState} from 'react';
 import {labels,needs,type Details} from '../lib/lead';
-type Receipt={id:string;token:string};
+type Fields=Record<string,string>;
+type Receipt={id:string;token:string;stored?:boolean;contact?:Fields};
+const unavailable='Impossible de transmettre la demande. Réessayez ou appelez-nous au 07 87 89 67 60.';
+// Netlify Forms: the form is declared in public/__forms.html, the only place Netlify's build bot can see it.
+async function sendToNetlify(fields:Fields){
+  const response=await fetch('/__forms.html',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({'form-name':'devis',...fields}).toString()});
+  if(!response.ok)throw new Error(unavailable);
+}
+// CRM route: true when saved, false when the service is unavailable, throws when the request itself is refused.
+async function sendToCrm(url:string,method:string,payload:unknown,tolerate:number[]=[]){
+  const response=await fetch(url,{method,headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(()=>null);
+  if(response?.ok)return true;
+  if(response&&response.status<500&&!tolerate.includes(response.status)){const data=await response.json().catch(()=>({}));throw new Error(data.error||unavailable);}
+  return false;
+}
 export default function QuoteForm({demo}:{demo:boolean}){
   const [hydrated,setHydrated]=useState(false);useEffect(()=>setHydrated(true),[]);
   const [step,setStep]=useState(1),[busy,setBusy]=useState(false),[error,setError]=useState(''),[receipt,setReceipt]=useState<Receipt|null>(null);
@@ -9,20 +23,32 @@ export default function QuoteForm({demo}:{demo:boolean}){
     const param=new URLSearchParams(location.search).get('besoin');if(needs.includes(param as typeof needs[number]))setNeed(param!);
     try{const saved=sessionStorage.getItem('lpsa-receipt');if(saved){const r=JSON.parse(saved);if(typeof r.id==='string'&&typeof r.token==='string'){setReceipt(r);setStep(2);}}}catch{/* A disabled session store does not prevent sending. */}
   },[]);
+  // Outside the local demo, a request counts as transmitted once Netlify Forms or the CRM has recorded it.
+  async function deliver(crm:()=>Promise<boolean>,fields:Fields){
+    const stored=await crm();let sent=false;
+    if(!demo){try{await sendToNetlify(fields);sent=true;}catch{/* The CRM copy may still exist. */}}
+    if(!stored&&!sent)throw new Error(unavailable);return stored;
+  }
   async function contact(e:React.SyntheticEvent<HTMLFormElement>){
-    e.preventDefault();setBusy(true);setError('');const f=new FormData(e.currentTarget);
-    const r=receipt??{id:crypto.randomUUID(),token:Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('')};setReceipt(r);
+    e.preventDefault();setError('');const f=new FormData(e.currentTarget),text=(key:string)=>String(f.get(key)??'').trim();
+    const fields:Fields={besoin:labels[need as typeof needs[number]],nom:text('name'),email:text('email'),telephone:text('phone'),organisation:text('organization')};
+    if(!fields.email&&!/^[+\d\s().-]{6,40}$/.test(fields.telephone)){setError('Indiquez un email valide ou un numéro de téléphone.');return;}
+    setBusy(true);
+    const base=receipt??{id:crypto.randomUUID(),token:Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('')};setReceipt(base);
     try{
-      const response=await fetch('/api/leads/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...r,need,name:f.get('name'),email:f.get('email'),phone:f.get('phone'),organization:f.get('organization'),website:f.get('website')})});
-      const data=await response.json();if(!response.ok)throw new Error(data.error||'Impossible de transmettre la demande.');
+      const stored=await deliver(()=>sendToCrm('/api/leads/','POST',{id:base.id,token:base.token,need,name:fields.nom,email:fields.email,phone:fields.telephone,organization:fields.organisation,website:f.get('website')}),{etape:'1 — Coordonnées',reference:base.id,...fields,website:text('website')});
+      const r={...base,stored,contact:fields};setReceipt(r);
       try{sessionStorage.setItem('lpsa-receipt',JSON.stringify(r));}catch{/* Keep receipt in component state. */}setStep(2);
     }catch(err){setError(err instanceof Error?err.message:'Une erreur est survenue.');}finally{setBusy(false);}
   }
   async function details(e:React.SyntheticEvent<HTMLFormElement>){
-    e.preventDefault();if(!receipt)return;setBusy(true);setError('');const f=new FormData(e.currentTarget);
+    e.preventDefault();if(!receipt)return;setBusy(true);setError('');const f=new FormData(e.currentTarget),text=(key:string)=>String(f.get(key)??'').trim();
     const number=(key:string)=>f.get(key)===''?null:Number(f.get(key));
-    const details:Details={event:String(f.get('event')),city:String(f.get('city')),postalCode:String(f.get('postalCode')),date:String(f.get('date')),volume:number('volume'),annualVolume:number('annualVolume'),transport:String(f.get('transport')) as Details['transport'],message:String(f.get('message'))};
-    try{const response=await fetch(`/api/leads/${receipt.id}/`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:receipt.token,...details})});const data=await response.json();if(!response.ok)throw new Error(data.error||'Impossible de sauvegarder les détails.');try{sessionStorage.removeItem('lpsa-receipt');}catch{}setStep(3);}catch(err){setError(err instanceof Error?err.message:'Une erreur est survenue.');}finally{setBusy(false);}
+    const details:Details={event:text('event'),city:text('city'),postalCode:text('postalCode'),date:text('date'),volume:number('volume'),annualVolume:number('annualVolume'),transport:text('transport') as Details['transport'],message:text('message')};
+    try{
+      await deliver(async()=>receipt.stored!==false&&await sendToCrm(`/api/leads/${receipt.id}/`,'PATCH',{token:receipt.token,...details},[404]),{etape:'2 — Détails',reference:receipt.id,...receipt.contact,evenement:details.event,ville:details.city,'code-postal':details.postalCode,date:details.date,volume:text('volume'),'volume-annuel':text('annualVolume'),transport:details.transport,message:details.message});
+      try{sessionStorage.removeItem('lpsa-receipt');}catch{}setStep(3);
+    }catch(err){setError(err instanceof Error?err.message:'Une erreur est survenue.');}finally{setBusy(false);}
   }
   return <div className="form-card">
     {demo&&<p className="demo-banner">Démonstration locale — utilisez uniquement des coordonnées fictives. Aucun email n’est envoyé.</p>}

@@ -27,6 +27,15 @@ pnpm exec netlify dev
 
 Le mode de démonstration fonctionne uniquement en développement et sur l’hôte local ; ses données sont enregistrées dans `.local/leads.json`, ignoré par Git. Aucun email n’est envoyé. Ne jamais y introduire de données réelles. La production sans configuration renvoie une indisponibilité explicite, jamais une fausse confirmation.
 
+## Netlify Forms
+
+Le formulaire de `/devis/` est enregistré dans Netlify Forms sous le nom `devis`. Comme la page est rendue côté serveur, le formulaire est déclaré dans `public/__forms.html` (lu par Netlify au déploiement) et `src/components/QuoteForm.tsx` y envoie les données en `POST`. Garder les noms de champs identiques dans les deux fichiers.
+
+- Activer une fois la détection : Netlify → Forms → Enable form detection, puis redéployer. Les notifications email se règlent dans Forms → Form notifications.
+- Chaque demande produit une entrée à l’étape 1 (coordonnées) puis, si les détails sont complétés, une seconde entrée complète. Le champ `reference` relie les deux et correspond à l’identifiant du lead dans Supabase.
+- L’enregistrement Supabase reste actif en parallèle. Si Supabase est indisponible ou non configuré, la demande est quand même transmise par Netlify Forms ; une confirmation n’est affichée que si l’un des deux l’a réellement enregistrée.
+- Netlify Forms n’existe ni avec `astro dev` ni avec `netlify dev` : le mode démonstration ne l’appelle pas. Le test réel se fait sur un déploiement.
+
 ## Raccordement Supabase LPSA 2
 
 1. Vérifier le projet exact et son schéma existant avant toute migration.
