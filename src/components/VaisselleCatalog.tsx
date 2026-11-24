@@ -22,7 +22,7 @@ export default function VaisselleCatalog(){
       <div className="catalog-chips" role="group" aria-label="Catégories">
         {categories.map(c=><button key={c} type="button" aria-pressed={cat===c} onClick={()=>setCat(c)}>{c}<span>{c==='Tout'?items.length:items.filter(i=>i.category===c).length}</span></button>)}
       </div>
-      <label className="catalog-search"><span className="sr-only">Rechercher un article</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" value={q} onChange={e=>setQ(e.target.value)} placeholder="Rechercher : verre à vin, assiette, chafing dish…" /></label>
+      <label className="catalog-search"><span className="sr-only">Rechercher un article</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" value={q} onChange={e=>setQ(e.target.value)} placeholder="Rechercher : verre à vin, assiette, saladier…" /></label>
     </div>
     <p className="catalog-count" aria-live="polite">{shown.length} article{shown.length>1?'s':''}{cat!=='Tout'?` · ${cat}`:''}</p>
     <ul className="catalog-grid">

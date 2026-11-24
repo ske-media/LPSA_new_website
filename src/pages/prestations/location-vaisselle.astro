@@ -12,7 +12,7 @@ const occasions=[
   {title:'Banquet & gala',text:'Des centaines de couverts identiques, livrés comptés et prêts à dresser.',icon:'<path d="M4 20h16M6 20v-6M18 20v-6M3 14h18l-2-5H5z"/>'},
   {title:'Repas d’affaires & séminaire',text:'Une vaisselle sobre et soignée pour recevoir clients et équipes sans fausse note.',icon:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>'},
   {title:'Réception privée',text:'Anniversaire, baptême, fête de famille : la belle vaisselle, sans la vaisselle à faire.',icon:'<path d="M8 3h8l-1 7a3 3 0 0 1-6 0zM12 13v6M8 21h8"/>'},
-  {title:'Cocktail & buffet',text:'Verrines, plateaux, chafing dishes et matériel traiteur pour un service fluide.',icon:'<path d="M5 12h14a7 7 0 0 1-14 0zM3 12h18M9 5c0 1.5 1 1.5 1 3M14 5c0 1.5 1 1.5 1 3"/>'},
+  {title:'Cocktail & buffet',text:'Verrines, flûtes, plats et plateaux de service pour un buffet élégant.',icon:'<path d="M5 12h14a7 7 0 0 1-14 0zM3 12h18M9 5c0 1.5 1 1.5 1 3M14 5c0 1.5 1 1.5 1 3"/>'},
   {title:'Association & repas collectif',text:'Repas de village, assemblée, loto : une formule adaptée aux petits budgets.',icon:'<circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2.5 20a5.5 5.5 0 0 1 11 0M10.5 20a5.5 5.5 0 0 1 11 0"/>',href:'/devis/?besoin=petits-lots'},
 ];
 const steps=[
@@ -30,7 +30,7 @@ const faq=[
 ];
 const ld={'@context':'https://schema.org','@type':'Service',name:'Location de vaisselle événementielle',serviceType:'Location et lavage de vaisselle',provider:{'@type':'LocalBusiness',name:'La Plonge s’Adapte',telephone:'+33787896760'},areaServed:['Haute-Savoie','Savoie','Ain'],description:'Location de vaisselle pour mariages, banquets, repas d’affaires et réceptions : livraison, coordination traiteur, reprise et lavage, en partenariat avec August Events.'};
 ---
-<Layout title="Location de vaisselle pour mariages, banquets et réceptions | La Plonge s’Adapte" description="Mariages, banquets, repas d’affaires : vaisselle livrée prête à servir, reprise et lavée, en lien avec votre traiteur. Catalogue de 180 références avec notre partenaire August Events." hideQuoteButton>
+<Layout title="Location de vaisselle pour mariages, banquets et réceptions | La Plonge s’Adapte" description="Mariages, banquets, repas d’affaires : vaisselle livrée prête à servir, reprise et lavée, en lien avec votre traiteur. Un large catalogue de vaisselle avec notre partenaire August Events." hideQuoteButton>
   <script type="application/ld+json" set:html={JSON.stringify(ld)} />
   <section class="page-hero vaisselle-hero">
     <div class="vaisselle-mosaic" aria-hidden="true">{mosaic.map((m,i)=><img src={m.image} alt="" width="420" height="420" style={`--i:${i}`} loading={i<3?'eager':'lazy'} />)}</div>
