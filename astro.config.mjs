@@ -8,4 +8,6 @@ export default defineConfig({
   integrations: [react()],
   devToolbar: { enabled: false },
   trailingSlash: 'always',
+  // sanitize-html is CommonJS and requires an ESM-only parser: bundle both so the Netlify function never calls require() on ESM.
+  vite: { ssr: { noExternal: ['sanitize-html', 'htmlparser2'] } },
 });
