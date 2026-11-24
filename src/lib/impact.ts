@@ -8,3 +8,8 @@ export function oethScenario({eligibleLabor,contribution,employmentRate,otherDed
   const potential=.3*eligibleLabor,cap=contribution*(employmentRate<3?.5:.75),remaining=Math.max(0,cap-otherDeductions);
   return {potential,cap,remaining,deduction:Math.min(potential,remaining)};
 }
+// From the guide "Combien de gobelets prévoir" : stock = services before the next clean delivery − confirmed clean returns + reserve.
+export function parkScenario({services,cleanReturns,reserve}:{services:number;cleanReturns:number;reserve:number}){
+  if([services,cleanReturns,reserve].some(n=>!Number.isFinite(n)||n<0))throw new Error('Volumes invalides.');
+  return {stock:Math.max(0,Math.round(services-cleanReturns+reserve))};
+}

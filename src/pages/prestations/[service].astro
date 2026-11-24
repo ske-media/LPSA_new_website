@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import Logo from '../../components/Logo.astro';
 import {editorialPosts} from '../../lib/editorial';
 export function getStaticPaths(){return ['lavage-gobelets','location-gobelets','location-vaisselle'].map(service=>({params:{service}}));}
 const entries={
@@ -10,5 +11,27 @@ const entries={
 const relatedSlugs:Record<string,string[]>={'lavage-gobelets':['lavage-gobelets-festival','prix-lavage-gobelets','collecte-livraison-gobelets-evenement'],'location-gobelets':['combien-gobelets-prevoir-evenement','acheter-ou-louer-gobelets-reutilisables','parc-gobelets-mutualise-collectivite'],'location-vaisselle':['location-vaisselle-evenement-guide','collecte-livraison-gobelets-evenement','rse-gobelets-reemploi-indicateurs']};
 const guides=relatedSlugs[Astro.params.service!].map(slug=>editorialPosts.find(p=>p.slug===slug)!);
 const [title,headline,intro,need]=entries[Astro.params.service as keyof typeof entries];
+const steps:Record<string,[string,string][]>={
+  lavage:[['Vos dates et vos volumes','Nous préparons ensemble le calendrier, les formats et les modalités de retour.'],['Collecte si vous le souhaitez','La collecte et la livraison peuvent être organisées avec nos partenaires de transport.'],['Lavage, séchage, comptage','Vos gobelets sont lavés, séchés, comptés puis conditionnés.'],['Votre parc repart','Retrait ou livraison selon le calendrier convenu, prêt pour le prochain service.']],
+  gobelets:[['Vos besoins','Formats, quantités, dates : nous étudions les disponibilités pour votre événement.'],['La mise à disposition','Les gobelets sont préparés selon le calendrier convenu.'],['Le retour au lavage','Après l’événement, le retour et le lavage sont prévus dans l’organisation.'],['La suite','Pour une saison ou plusieurs dates, nous construisons un calendrier de rotations.']],
+  vaisselle:[['Votre service','Plastique réutilisable, inox, porcelaine ou verrerie : nous préparons la vaisselle adaptée à vos repas.'],['Location et lavage réunis','Une seule organisation pour la mise à disposition et le lavage.'],['Le transport','Collecte et livraison possibles, chiffrées en supplément.'],['Le minimum','Le minimum de commande est de 1 500 € pour la location et le lavage.']],
+};
+const faqLd={'@context':'https://schema.org','@type':'Service',name:title,provider:{'@type':'LocalBusiness',name:'La Plonge s’Adapte',telephone:'+33787896760'},areaServed:['Haute-Savoie','Savoie','Ain'],description:intro};
 ---
-<Layout title={`${title} | La Plonge s’Adapte`} description={intro}><main class="section impact-page"><p class="eyebrow">HAUTE-SAVOIE · SAVOIE · AIN</p><h1>{headline}</h1><p class="section-intro">{intro}</p><h2>{title}</h2><p class="prose">Un événement, plusieurs dates ou toute une saison : nous préparons une proposition adaptée à votre calendrier. La collecte et la livraison peuvent être organisées avec nos partenaires de transport et sont chiffrées séparément.</p><h2>Un calendrier clair avant de commencer.</h2><p class="prose">Indiquez les dates, le lieu et les volumes estimés. Nous définissons ensemble les modalités de prise en charge et de remise à disposition. Pour les projets de plus de 100 000 gobelets, nous étudions également les possibilités au-delà des Savoies et de l’Ain.</p><a class="button" href={`/devis/?besoin=${need}`}>Préparer mon devis ↗</a></main><section class="section related-guides"><p class="eyebrow">LES GUIDES POUR PRÉPARER VOTRE PRESTATION</p><div class="cards">{guides.map(p=><a class="solution-card" href={`/blog/${p.slug}/`}><span class="eyebrow">{p.category}</span><h3>{p.title}</h3><span class="card-cta">Lire le guide ↗</span></a>)}</div></section></Layout>
+<Layout title={`${title} | La Plonge s’Adapte`} description={intro}>
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+  <section class="page-hero">
+    <div class="hero-mark" aria-hidden="true"><Logo id="lg-svc" variant="mark" /></div>
+    <p class="crumb"><a href="/">Accueil</a> / <a href="/#solutions">Prestations</a> / <span>{title}</span></p>
+    <p class="label">{title} · Haute-Savoie · Savoie · Ain</p>
+    <h1>{headline}</h1>
+    <p class="lead">{intro}</p>
+    <div class="cta-row"><a class="btn btn-primary btn-lg" href={`/devis/?besoin=${need}`}>Préparer mon devis <span aria-hidden="true">→</span></a><a class="btn btn-ghost btn-lg" href="tel:+33787896760">07 87 89 67 60</a></div>
+  </section>
+  <section class="section split">
+    <div data-reveal><p class="label">Comment ça se passe</p><h2>Un calendrier clair <em>avant de commencer.</em></h2><p class="lead" style="margin-top:22px">Un événement, plusieurs dates ou toute une saison : nous préparons une proposition adaptée à votre calendrier. Pour les projets de plus de 100 000 gobelets, nous étudions également les possibilités au-delà des Savoies et de l’Ain.</p></div>
+    <ol class="feature-list">{steps[need].map(([h,t],i)=><li data-reveal style={`--d:${i*.08}s`}><b>{String(i+1).padStart(2,'0')}</b><div><h3>{h}</h3><p>{t}</p></div></li>)}</ol>
+  </section>
+  <section class="section" style="padding-top:0"><div class="band-cta" data-reveal><h2>Indiquez vos dates, <em>on s’occupe du reste.</em></h2><div class="cta-row"><a class="btn btn-primary btn-lg" href={`/devis/?besoin=${need}`}>Préparer mon devis <span aria-hidden="true">→</span></a></div></div></section>
+  <section class="section related-guides" style="padding-top:0"><p class="label">Les guides pour préparer votre prestation</p><div class="cards">{guides.map((p,i)=><a class="card" href={`/blog/${p.slug}/`} data-reveal style={`--d:${i*.08}s`}><span class="chip">{p.category}</span><h3>{p.title}</h3><span class="card-cta">Lire le guide <span aria-hidden="true">→</span></span></a>)}</div></section>
+</Layout>

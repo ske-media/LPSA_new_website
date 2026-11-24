@@ -22,7 +22,14 @@ test('3D scene responds to scroll without moving the document automatically',asy
   await expect(scene).toHaveAttribute('data-scene',/ready|fallback/,{timeout:15000});
   if(await scene.getAttribute('data-scene')==='fallback')return;
   const start=Number(await scene.getAttribute('data-progress'));
-  await page.evaluate(()=>scrollTo(0,innerHeight*2.6));
+  await page.evaluate(()=>scrollTo(0,document.querySelector('#cup-story')!.getBoundingClientRect().top+scrollY+innerHeight*2.6));
   await expect.poll(async()=>Number(await scene.getAttribute('data-progress'))).toBeGreaterThan(start+.6);
   const position=await page.evaluate(()=>scrollY);await page.waitForTimeout(300);expect(await page.evaluate(()=>scrollY)).toBe(position);
+});
+test('dive hero tracks scroll depth and keeps its call to action reachable',async({page})=>{
+  await page.goto('/');const dive=page.locator('#plongee');
+  await expect(page.getByRole('link',{name:'Préparer mon événement'}).first()).toBeVisible();
+  await page.evaluate(()=>scrollTo(0,innerHeight*1.2));
+  await expect.poll(async()=>Number(await dive.evaluate(el=>getComputedStyle(el).getPropertyValue('--p')))).toBeGreaterThan(.4);
+  await expect(page.locator('.depth-value')).not.toHaveText('0 m');
 });

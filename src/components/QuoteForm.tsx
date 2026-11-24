@@ -60,7 +60,9 @@ export default function QuoteForm({demo}:{demo:boolean}){
   const q:Q=order[qi],first=a.name.trim().split(/\s+/)[0]||'';
 
   useEffect(()=>{
-    const param=new URLSearchParams(location.search).get('besoin');if(needs.includes(param as Need)){setA(p=>({...p,need:param as Need}));setQi(1);}
+    const query=new URLSearchParams(location.search),param=query.get('besoin'),volume=(query.get('volume')||'').replace(/\D/g,'').slice(0,8);
+    if(volume&&volume!=='0')setA(p=>({...p,volume}));
+    if(needs.includes(param as Need)){setA(p=>({...p,need:param as Need}));setQi(1);}
     try{const saved=sessionStorage.getItem('lpsa-receipt');if(saved){const r=JSON.parse(saved);if(typeof r.id==='string'&&typeof r.token==='string'){setReceipt(r);setContact('sent');setQi(firstDetail);}}}catch{/* A disabled session store does not prevent sending. */}
   },[]);
   // Each new question: keyboard users land in its field, touch users on its title (no surprise keyboard).

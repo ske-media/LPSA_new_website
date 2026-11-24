@@ -13,3 +13,10 @@ La hero utilise 96 images originales rendues dans Blender Cycles (Metal), une g�
 
 ### Netteté de la séquence
 La séquence haute définition utilise 2560 × 1600 pixels, 64 échantillons Cycles, 128 segments pour chaque gobelet, sans profondeur de champ ni flou de mouvement. Les WebP sont encodés à qualité 94, avec une variante mobile de 1440 pixels. Les fichiers versionnés `cinematic-hq` évitent de réutiliser les anciennes images depuis le cache du navigateur.
+
+## Refonte « La plongée » (novembre 2026)
+Identité tirée de la planche de logo : ruban argenté en deux vagues, « LA PLONGE » en capitales fines sans barre aux A, « S’ADAPTE » en cyan très espacé. Le logo est reconstruit en vectoriel par `scripts/create-logo-plonge.py` (fichiers dans `public/brand/plonge/`, tracés réutilisés par `src/components/Logo.astro`).
+
+Palette : abysse `#020a10`, pétrole `#0c3a4b`, argent (dégradé blanc → `#9fdbe6`) et cyan `#72c6d4`. Titres Manrope 300, texte DM Sans 17 px minimum. Styles : `src/styles/base.css` (système), `pages.css` (pages), `quote.css` (formulaire).
+
+Accueil en actes : 1) « la plongée », scène Three.js (`src/lib/dive-scene.ts`) avec le ruban en métal brossé, rayons de surface, particules et jauge de profondeur pilotés au scroll ; 2) la séquence Blender existante ; puis repères, méthode, prestations, estimateur de parc (formule du guide « Combien de gobelets prévoir »), engagement, guides, FAQ et appel final. La scène 3D se charge après l’affichage, reste en pause hors écran et est remplacée par le logo statique en mouvement réduit ou sans WebGL.
