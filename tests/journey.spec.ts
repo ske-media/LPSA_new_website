@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
 test('explicit transmission, reload resume, completion, back-office status',async({page})=>{
   await page.goto('/devis/');await page.evaluate(()=>sessionStorage.clear());await page.reload();
-  await page.getByLabel('Prénom et nom').fill('Contact fictif');await page.getByLabel('Email',{exact:true}).fill('test@example.com');await page.getByLabel('Organisation',{exact:true}).fill(`Test parcours ${Date.now()}`);
+  await page.getByRole('button',{name:/Lavage de gobelets/}).click();await page.getByLabel('Prénom et nom').fill('Contact fictif');await page.getByLabel('Email',{exact:true}).fill('test@example.com');await page.getByLabel(/^Organisation/).fill(`Test parcours ${Date.now()}`);
   await page.getByRole('button',{name:'Transmettre et préciser mon projet'}).click();await expect(page.getByText('Vos coordonnées ont bien été transmises.')).toBeVisible();
   await page.reload();await expect(page.getByText('Les détails, à votre rythme.')).toBeVisible();
   await page.getByLabel('Nom de l’événement').fill('Festival de démonstration');await page.getByLabel('Ville',{exact:true}).fill('Annecy');await page.getByLabel('Code postal').fill('74000');await page.getByLabel('Volume de l’événement').fill('50000');
