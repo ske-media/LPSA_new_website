@@ -1,11 +1,19 @@
 import {test,expect} from '@playwright/test';
 test('explicit transmission, reload resume, completion, back-office status',async({page})=>{
   await page.goto('/devis/');await page.evaluate(()=>sessionStorage.clear());await page.reload();
-  await page.getByRole('button',{name:/Lavage de gobelets/}).click();await page.getByLabel('Prénom et nom').fill('Contact fictif');await page.getByLabel('Email',{exact:true}).fill('test@example.com');await page.getByLabel(/^Organisation/).fill(`Test parcours ${Date.now()}`);
-  await page.getByRole('button',{name:'Transmettre et préciser mon projet'}).click();await expect(page.getByText('Vos coordonnées ont bien été transmises.')).toBeVisible();
-  await page.reload();await expect(page.getByText('Les détails, à votre rythme.')).toBeVisible();
-  await page.getByLabel('Nom de l’événement').fill('Festival de démonstration');await page.getByLabel('Ville',{exact:true}).fill('Annecy');await page.getByLabel('Code postal').fill('74000');await page.getByLabel('Volume de l’événement').fill('50000');
-  await page.getByRole('button',{name:'Finaliser ma demande'}).click();await expect(page.getByText('Le relais est pris.')).toBeVisible();
+  await page.getByRole('button',{name:/Lavage de gobelets/}).click();
+  await page.getByLabel('Comment vous appelez-vous').fill('Contact fictif');await page.keyboard.press('Enter');
+  await page.getByRole('button',{name:'OK'}).click();await expect(page.getByText('Indiquez au moins un email')).toBeVisible();
+  await page.getByLabel('Email',{exact:true}).fill('test@example.com');await page.getByRole('button',{name:'OK'}).click();
+  await page.getByLabel('Pour quelle structure').fill(`Test parcours ${Date.now()}`);
+  await page.getByRole('button',{name:'Transmettre mes coordonnées'}).click();await expect(page.getByText('Vos coordonnées ont bien été transmises.')).toBeVisible();
+  await page.reload();await expect(page.getByText('Comment s’appelle votre événement ?')).toBeVisible();
+  await page.getByLabel('Comment s’appelle votre événement').fill('Festival de démonstration');await page.getByRole('button',{name:'OK'}).click();
+  await page.getByRole('button',{name:'Passer'}).click();
+  await page.getByLabel('Ville',{exact:true}).fill('Annecy');await page.getByLabel('Code postal').fill('74000');await page.getByRole('button',{name:'OK'}).click();
+  await page.getByLabel('Pour cet événement').fill('50000');await page.getByRole('button',{name:'OK'}).click();
+  await page.getByRole('button',{name:'Collecte et livraison'}).click();
+  await page.getByRole('button',{name:'Finaliser ma demande'}).click();await expect(page.getByText('Le relais est pris')).toBeVisible();
   await page.getByRole('link',{name:'Voir la demande dans le back-office'}).click();await page.locator('.lead-card').first().click();await expect(page.getByRole('heading',{name:'Festival de démonstration'})).toBeVisible();await expect(page.getByText('Cœur de cible',{exact:true})).toBeVisible();
   await page.getByLabel('Statut',{exact:true}).selectOption('Gagnée');await expect(page.locator('.lead-card').first().getByText('Gagnée')).toBeVisible();await page.reload();await expect(page.locator('.lead-card').first().getByText('Gagnée')).toBeVisible();
 });
