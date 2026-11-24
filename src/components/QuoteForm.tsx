@@ -230,8 +230,8 @@ export default function QuoteForm({demo}:{demo:boolean}){
     <h2 tabIndex={-1}>Combien de gobelets ou de pièces ?</h2>
     <p className="tf-sub">Une estimation suffit.</p>
     <div className="qf-grid tf-grid">
-      <div className="qf-field"><label htmlFor="tf-volume">Pour cet événement</label>{field('volume',{type:'number',inputMode:'numeric',min:0,max:10000000,placeholder:'Ex. 5 000'},true)}</div>
-      <div className="qf-field"><label htmlFor="tf-annualVolume">Par an, si vous en organisez plusieurs</label>{field('annualVolume',{type:'number',inputMode:'numeric',min:0,max:100000000,placeholder:'Ex. 40 000'})}</div>
+      <div className="qf-field"><label htmlFor="tf-volume">Pour cet événement</label>{field('volume',{type:'number',inputMode:'numeric',min:0,max:10000000,placeholder:'Ex. 800'},true)}</div>
+      <div className="qf-field"><label htmlFor="tf-annualVolume">Par an, si vous en organisez plusieurs</label>{field('annualVolume',{type:'number',inputMode:'numeric',min:0,max:100000000,placeholder:'Ex. 2 500'})}</div>
     </div>
     {a.need==='vaisselle'&&<p className="qf-note"><span aria-hidden="true">i</span>Pour la vaisselle, le minimum de commande est de 1 500 € pour la location et le lavage ; le transport est en supplément.</p>}
     {ok('OK',isEmpty(a.volume,a.annualVolume))}

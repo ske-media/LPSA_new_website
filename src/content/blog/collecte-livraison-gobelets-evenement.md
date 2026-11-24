@@ -40,6 +40,6 @@ Le dépôt par vos équipes peut convenir si vous disposez d’un véhicule adap
 
 Une collecte organisée vous permet de définir ce flux avec votre prestation de lavage. Demandez que le devis précise les adresses, le nombre de trajets, les créneaux et les prestations de manutention incluses.
 
-La zone prioritaire de La Plonge s’Adapte couvre les départements 74, 73 et 01. Au-delà de 100 000 gobelets, les projets hors de cette zone sont étudiés selon la logistique et le calendrier.
+La zone prioritaire de La Plonge s’Adapte couvre les départements 74, 73 et 01. Les projets hors de cette zone sont étudiés selon la logistique et le calendrier.
 
 [Organiser le transport de mes gobelets](/devis/?besoin=lavage)

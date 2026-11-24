@@ -6,7 +6,7 @@ Pour un événement qui mobilise plusieurs dizaines de milliers de gobelets, le 
 
 La première question est simple : quand aurez-vous à nouveau besoin des gobelets propres ? Un festival sur trois jours avec rotation quotidienne demande une organisation différente d’un événement dont tout le parc peut repartir après la clôture.
 
-Transmettez au prestataire les dates de service, les heures de fermeture des bars, les créneaux d’accès au site et les besoins du lendemain. Une quantité totale ne suffit pas pour réserver un calendrier : 60 000 gobelets confiés en un lot et trois lots de 20 000 attendus chaque jour n’impliquent pas le même rythme.
+Transmettez au prestataire les dates de service, les heures de fermeture des bars, les créneaux d’accès au site et les besoins du lendemain. Une quantité totale ne suffit pas pour réserver un calendrier : 3 000 gobelets confiés en un lot et trois lots de 1 000 attendus chaque jour n’impliquent pas le même rythme.
 
 Le délai de lavage, les horaires de transport et la disponibilité du stock propre doivent être validés ensemble. Un retour dans la nuit ne signifie pas automatiquement une livraison le lendemain matin.
 

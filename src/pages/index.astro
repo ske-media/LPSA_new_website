@@ -15,7 +15,7 @@ const icons={
   petits:'<circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2.5 20a5.5 5.5 0 0 1 11 0M10.5 20a5.5 5.5 0 0 1 11 0"/>',
 };
 const solutions=[
-  {key:'lavage',n:'01',title:'Lavage de gobelets',lead:'Vous avez les gobelets.',text:'Nous prenons le relais pour le lavage, le séchage, le comptage et le conditionnement.',points:['Du petit lot au grand événement','Collecte et livraison possibles'],href:'/prestations/lavage-gobelets/',cta:'Organiser mon lavage'},
+  {key:'lavage',n:'01',title:'Lavage de gobelets',lead:'Vous avez les gobelets.',text:'Nous prenons le relais pour le lavage, le séchage, le comptage et le conditionnement.',points:['Quel que soit le nombre de gobelets','Collecte et livraison possibles'],href:'/prestations/lavage-gobelets/',cta:'Organiser mon lavage'},
   {key:'gobelets',n:'02',title:'Location de gobelets',lead:'Il vous manque un parc.',text:'Louez des gobelets adaptés à vos boissons et à vos volumes. Le lavage est prévu dans l’organisation.',points:['Formats et quantités sur mesure','Retour au lavage organisé'],href:'/prestations/location-gobelets/',cta:'Louer des gobelets'},
   {key:'vaisselle',n:'03',title:'Location de vaisselle',lead:'Mariage, banquet, repas d’affaires.',text:'Une vaisselle élégante livrée prête à servir, reprise et lavée, en lien avec votre traiteur.',points:[`${vaisselle.length} références avec August Events`,'Livraison, reprise et lavage'],href:'/prestations/location-vaisselle/',cta:'Composer ma table'},
   {key:'petits',n:'04',title:'Petits événements & associations',lead:'Pas besoin d’être un festival.',text:'Fête de village, kermesse, repas associatif : une formule pensée pour les petits volumes de gobelets ou de vaisselle.',points:['Gobelets ou vaisselle','Une solution à votre échelle'],href:'/devis/?besoin=petits-lots',cta:'Parler de mon événement'},
@@ -27,7 +27,7 @@ const faq=[
   {q:'Louez-vous aussi de la vaisselle pour un mariage ou un banquet ?',a:'Oui. Avec notre partenaire August Events, nous proposons un large catalogue de vaisselle, livrée prête à servir, reprise après le service et lavée par notre équipe. Nous pouvons nous coordonner directement avec votre traiteur.'},
   {q:'Vous organisez aussi le transport ?',a:'Oui. Nous organisons la collecte et la livraison avec nos partenaires de transport. Le service est chiffré séparément dans votre proposition.'},
   {q:'Et si nous n’avons pas de gobelets ?',a:'Nous pouvons préparer une location ou vous accompagner dans le choix d’un parc à acheter.'},
-  {q:'Intervenez-vous au-delà des Savoies et de l’Ain ?',a:'Pour les marchés de plus de 100 000 gobelets, nous étudions les possibilités au-delà du 74, du 73 et du 01, selon le calendrier et la logistique.'},
+  {q:'Intervenez-vous au-delà des Savoies et de l’Ain ?',a:'Nous intervenons en priorité dans le 74, le 73 et le 01. Pour un événement plus éloigné, nous étudions les possibilités selon le calendrier et la logistique.'},
   {q:'Qu’est-ce qu’une entreprise adaptée ?',a:'C’est une entreprise qui emploie majoritairement des personnes en situation de handicap. Confier votre prestation à La Plonge s’Adapte soutient directement ces emplois, et peut, sous conditions, entrer dans votre démarche OETH.'},
 ];
 const faqLd={'@context':'https://schema.org','@type':'FAQPage',mainEntity:faq.map(f=>({'@type':'Question',name:f.q,acceptedAnswer:{'@type':'Answer',text:f.a}}))};

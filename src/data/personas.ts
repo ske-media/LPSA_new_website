@@ -33,7 +33,7 @@ export const personas:Persona[]=[
   ],
   argsTitle:['Ce que nous prenons en charge','pour votre club.'],
   args:[
-    {title:'Une formule petits lots',text:'Pas besoin d’être un grand événement : nous adaptons l’organisation au volume d’une buvette ou d’un tournoi.'},
+    {title:'Une formule petits lots',text:'Quel que soit votre volume : nous adaptons l’organisation au volume d’une buvette ou d’un tournoi.'},
     {title:'Des gobelets réutilisables',text:'Vous n’avez pas de parc ? Nous vous en louons. Vous en avez un ? Nous le lavons, le comptons et le reconditionnons.'},
     {title:'La vaisselle du repas',text:'Repas d’après-match, soirée des partenaires, gala du club : la vaisselle arrive prête à servir et repart sans être lavée.'},
     {title:'Un calendrier sur la saison',text:'Donnez-nous vos dates à domicile : nous préparons les rotations une fois pour toutes, sans tout réorganiser à chaque match.'},
@@ -129,13 +129,13 @@ export const personas:Persona[]=[
   h1:['Comités des fêtes : la fête pour tous,','la plonge pour nous.'],
   lead:'Fête de village, bal du 14 juillet, vogue, marché de Noël, repas dansant : nous louons et lavons gobelets et vaisselle, avec une formule pensée pour les associations. Vos bénévoles profitent enfin de la fête.',
   pains:[
-    {title:'Le lendemain, toujours les mêmes',text:'Quand la place est vide, une poignée de bénévoles reste pour laver, sécher et ranger des milliers de gobelets.'},
+    {title:'Le lendemain, toujours les mêmes',text:'Quand la place est vide, une poignée de bénévoles reste pour laver, sécher et ranger tous les gobelets.'},
     {title:'Un budget associatif',text:'Les recettes de la buvette financent l’année : impossible de les engloutir dans la logistique.'},
     {title:'Le jetable n’est plus une option',text:'Les habitants comme la mairie attendent des gobelets réutilisables, mais encore faut-il pouvoir les laver.'},
   ],
   argsTitle:['Ce que nous faisons','à votre place.'],
   args:[
-    {title:'Une formule petits lots',text:'Nous adaptons l’organisation au volume d’une fête de village, sans vous imposer celle d’un grand festival.'},
+    {title:'Une formule petits lots',text:'Nous adaptons l’organisation au volume de votre fête, quel qu’il soit.'},
     {title:'Vous déposez, ou nous collectons',text:'Vous pouvez déposer et récupérer vous-même pour maîtriser le budget, ou nous confier la collecte et la livraison.'},
     {title:'Des gobelets réutilisables',text:'Loués pour l’occasion, ou votre propre parc lavé, compté et reconditionné pour la prochaine fête.'},
     {title:'La vaisselle du repas',text:'Paella géante, repas des aînés, banquet : assiettes, couverts et verres livrés prêts à servir, repris sans être lavés.'},
@@ -164,7 +164,7 @@ export const personas:Persona[]=[
   lead:'Vœux, fête de la musique, forum des associations, marché de Noël : nous lavons, comptons et stockons le parc de gobelets que vous prêtez, et nous louons la vaisselle de vos cérémonies. Un achat local et responsable.',
   pains:[
     {title:'Un parc prêté… et rendu comment ?',text:'Entre deux associations, il faut laver, sécher, recompter et constater les pertes. Rarement le métier des services techniques.'},
-    {title:'Des agents déjà très sollicités',text:'Chaque manifestation mobilise vos équipes : le lavage de milliers de gobelets ne devrait pas s’y ajouter.'},
+    {title:'Des agents déjà très sollicités',text:'Chaque manifestation mobilise vos équipes : le lavage des gobelets ne devrait pas s’y ajouter.'},
     {title:'Des achats à justifier',text:'Réduction des déchets, insertion, ancrage local : vos élus attendent des prestataires qui répondent à ces objectifs.'},
   ],
   argsTitle:['Ce que nous apportons','à votre commune.'],

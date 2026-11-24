@@ -10,7 +10,7 @@ La Plonge s’Adapte chiffre le transport séparément. Cette distinction permet
 
 ## Les paramètres qui font varier le devis
 
-Le volume global compte, mais la manière de le répartir compte aussi. Un lot homogène de 50 000 gobelets et dix prestations indépendantes de 5 000 pièces créent des besoins différents en réception, tri, manutention et transport.
+Le volume global compte, mais la manière de le répartir compte aussi. Un lot homogène de 3 000 gobelets et dix prestations indépendantes de 300 pièces créent des besoins différents en réception, tri, manutention et transport.
 
 Les formats doivent être détaillés. Un gobelet de 25 cl, un modèle de 50 cl et un pichet ne sont pas des unités interchangeables dans un devis. Le calendrier de restitution, la fréquence des rotations et le niveau de préparation des caisses influencent également l’organisation.
 
@@ -22,7 +22,7 @@ Utilisez cette structure :
 
 **Budget total = lavage par format + conditionnement non inclus + transport + prestations complémentaires convenues.**
 
-Exemple purement illustratif : 40 000 lavages à 0,15 € HT représentent 6 000 € HT avant transport et éventuels compléments. Ce calcul explique la méthode ; ce n’est ni une moyenne nationale ni une offre tarifaire de La Plonge s’Adapte.
+Exemple purement illustratif : 2 000 lavages à 0,15 € HT représentent 300 € HT avant transport et éventuels compléments. Ce calcul explique la méthode ; ce n’est ni une moyenne nationale ni une offre tarifaire de La Plonge s’Adapte.
 
 Pour comparer deux propositions, divisez ensuite leur coût total par le volume effectivement pris en charge, à périmètre et taxes identiques. Une ligne de transport oubliée peut modifier la comparaison sur un petit lot ; à l’inverse, une tournée regroupée peut améliorer l’organisation de plusieurs événements.
 

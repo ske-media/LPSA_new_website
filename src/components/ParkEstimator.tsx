@@ -10,13 +10,13 @@ function Row({label,hint,value,max,step,onChange}:{label:string;hint:string;valu
   </div>;
 }
 export default function ParkEstimator(){
-  const [services,setServices]=useState(12000),[returns,setReturns]=useState(5000),[reserve,setReserve]=useState(3000);
+  const [services,setServices]=useState(1500),[returns,setReturns]=useState(500),[reserve,setReserve]=useState(300);
   const {stock}=parkScenario({services,cleanReturns:returns,reserve});
   return <div className="estimator">
     <div className="est-inputs">
-      <Row label="Boissons servies avant le prochain réapprovisionnement" hint="Le nombre de services attendus, par exemple sur une journée ou un pic." value={services} max={200000} step={500} onChange={setServices} />
-      <Row label="Gobelets propres déjà confirmés pour cette période" hint="Ne comptez pas les gobelets sales : ils doivent d’abord être lavés." value={returns} max={100000} step={500} onChange={setReturns} />
-      <Row label="Réserve de sécurité" hint="Une marge si le public dépasse la prévision ou si un retour tarde." value={reserve} max={50000} step={500} onChange={setReserve} />
+      <Row label="Boissons servies avant le prochain réapprovisionnement" hint="Le nombre de services attendus, par exemple sur une journée ou un pic." value={services} max={10000} step={50} onChange={setServices} />
+      <Row label="Gobelets propres déjà confirmés pour cette période" hint="Ne comptez pas les gobelets sales : ils doivent d’abord être lavés." value={returns} max={5000} step={50} onChange={setReturns} />
+      <Row label="Réserve de sécurité" hint="Une marge si le public dépasse la prévision ou si un retour tarde." value={reserve} max={2000} step={50} onChange={setReserve} />
     </div>
     <div className="est-result" aria-live="polite">
       <p className="label plain">Votre parc à prévoir</p>

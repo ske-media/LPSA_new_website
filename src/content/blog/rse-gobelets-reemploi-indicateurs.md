@@ -14,7 +14,7 @@ Séparez les gobelets conservés par le public, les pertes identifiées, les dé
 
 Additionner les passages du parc sur plusieurs manifestations permet de suivre sa circulation. Précisez toutefois si vous comptez des sorties, des lavages ou des services de boissons : ce sont des unités différentes.
 
-Exemple fictif : un parc de 20 000 pièces mobilisé à hauteur de 100 000 usages identifiés représente cinq usages moyens par pièce à l’échelle du parc. Ce calcul ne prouve pas que chaque gobelet a servi exactement cinq fois ; certains ont pu circuler davantage que d’autres.
+Exemple fictif : un parc de 600 pièces mobilisé à hauteur de 3 000 usages identifiés représente cinq usages moyens par pièce à l’échelle du parc. Ce calcul ne prouve pas que chaque gobelet a servi exactement cinq fois ; certains ont pu circuler davantage que d’autres.
 
 Notre [calculateur de scénario de réemploi](/rse/) aide à explorer ce type d’hypothèse. Ses résultats doivent être présentés comme des scénarios lorsqu’ils ne reposent pas sur vos données réelles.
 

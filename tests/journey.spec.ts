@@ -51,3 +51,12 @@ test('audience pages carry their own arguments, structured data and profile to t
   await page.getByRole('link',{name:'Demander un devis'}).first().click();await expect(page).toHaveURL(/besoin=vaisselle&profil=traiteurs/);
   expect(await (await request.get('/sitemap.xml')).text()).toContain('/pour/collectivites-mairies/');
 });
+test('public pages never show a volume above 3 000, so small organisations feel welcome',async({page})=>{
+  const pages=['/','/prestations/lavage-gobelets/','/prestations/location-gobelets/','/prestations/location-vaisselle/','/rse/','/blog/','/blog/combien-gobelets-prevoir-evenement/','/blog/lavage-gobelets-festival/','/blog/prix-lavage-gobelets/','/pour/clubs-sportifs/','/pour/restaurants-entreprise/','/pour/traiteurs/','/pour/comites-des-fetes/','/pour/collectivites-mairies/'];
+  for(const url of pages){
+    await page.goto(url);await page.waitForTimeout(400);
+    const text=(await page.locator('main').innerText()).replace(/0\d(?:[ .]\d{2}){4}/g,'');
+    const numbers=[...text.matchAll(/(\d{1,3}(?:[   ]\d{3})+|\d{4,})(?!\s*(?:€|°|cl|cm|L\b))/g)].map(m=>Number(m[1].replace(/\D/g,''))).filter(n=>n<2000||n>2030);
+    expect(numbers.filter(n=>n>3000),url).toEqual([]);
+  }
+});

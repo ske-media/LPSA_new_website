@@ -16,7 +16,7 @@ Une base de travail est :
 
 **Stock nécessaire sur une période = besoins de service avant le prochain réapprovisionnement − retours propres réellement disponibles + réserve opérationnelle.**
 
-Exemple fictif : vous estimez 12 000 services avant la prochaine livraison. Vous disposez de 5 000 gobelets propres dont le retour est confirmé avant le pic. Avec une réserve choisie de 3 000 pièces, le stock complémentaire à prévoir est de 10 000 gobelets.
+Exemple fictif : vous estimez 1 500 services avant la prochaine livraison. Vous disposez de 500 gobelets propres dont le retour est confirmé avant le pic. Avec une réserve choisie de 300 pièces, le stock complémentaire à prévoir est de 1 300 gobelets.
 
 Cet exemple ne fixe pas un taux de réserve universel. Votre marge dépend du risque acceptable, du temps de transport, de la fiabilité des prévisions et des stocks déjà répartis sur les bars.
 
