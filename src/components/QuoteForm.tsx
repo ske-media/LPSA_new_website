@@ -1,5 +1,5 @@
 import {useEffect,useRef,useState,type ReactNode} from 'react';
-import {labels,needs,type Details} from '../lib/lead';
+import {labels,needs,profils,type Details} from '../lib/lead';
 
 type Need=typeof needs[number];
 type Fields=Record<string,string>;
@@ -24,7 +24,7 @@ async function sendToCrm(url:string,method:string,payload:unknown,tolerate:numbe
 }
 
 const descriptions:Record<Need,string>={
-  lavage:'Vos gobelets lavés, séchés, comptés et reconditionnés, dès 3 000 pièces.',
+  lavage:'Vos gobelets lavés, séchés, comptés et reconditionnés.',
   gobelets:'Des gobelets réutilisables pour votre événement, avec leur retour au lavage.',
   vaisselle:'Banquets, mariages, repas d’affaires : vaisselle livrée, reprise et lavée.',
   'petits-lots':'Association, fête de village, kermesse : une formule pour les petits volumes.',
@@ -57,6 +57,7 @@ export default function QuoteForm({demo}:{demo:boolean}){
   const [hydrated,setHydrated]=useState(false);useEffect(()=>setHydrated(true),[]);
   const [qi,setQi]=useState(0),[dir,setDir]=useState<1|-1>(1),[a,setA]=useState<Answers>(empty);
   const [errors,setErrors]=useState<Errors>({}),[error,setError]=useState(''),[pending,setPending]=useState(false),[done,setDone]=useState(false);
+  const [profil,setProfil]=useState('');
   const [receipt,setReceipt]=useState<Receipt|null>(null),[contact,setContact]=useState<'idle'|'sending'|'sent'>('idle');
   const contactSending=useRef<Promise<Receipt|null>|null>(null),card=useRef<HTMLDivElement>(null),stage=useRef<HTMLDivElement>(null),moved=useRef(false);
   const q:Q=order[qi],first=a.name.trim().split(/\s+/)[0]||'';
@@ -64,6 +65,7 @@ export default function QuoteForm({demo}:{demo:boolean}){
   useEffect(()=>{
     const query=new URLSearchParams(location.search),param=query.get('besoin'),volume=(query.get('volume')||'').replace(/\D/g,'').slice(0,8);
     if(volume&&volume!=='0')setA(p=>({...p,volume}));
+    setProfil(profils[query.get('profil')||'']||'');
     // Selection built on the tableware catalogue page: "Name × qty" lines.
     const selection=(query.get('selection')||'').split('|').map(l=>l.replace(/[\u0000-\u001f<>]/g,'').trim()).filter(Boolean).slice(0,60);
     if(selection.length)setA(p=>({...p,message:(`Ma sélection de vaisselle :\n${selection.map(l=>`- ${l}`).join('\n')}`).slice(0,3800)}));
@@ -131,7 +133,7 @@ export default function QuoteForm({demo}:{demo:boolean}){
     const fields:Fields={besoin:labels[a.need],nom:a.name.trim(),email:a.email.trim(),telephone:a.phone.trim(),organisation:a.organization.trim()};
     const base=receipt??{id:crypto.randomUUID(),token:Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('')};
     setReceipt(base);setContact('sending');move(firstDetail);
-    contactSending.current=deliver(()=>sendToCrm('/api/leads/','POST',{id:base.id,token:base.token,need:a.need,name:fields.nom,email:fields.email,phone:fields.telephone,organization:fields.organisation,website:a.website}),{etape:'1 — Coordonnées',reference:base.id,...fields,website:a.website})
+    contactSending.current=deliver(()=>sendToCrm('/api/leads/','POST',{id:base.id,token:base.token,need:a.need,name:fields.nom,email:fields.email,phone:fields.telephone,organization:fields.organisation,website:a.website}),{etape:'1 — Coordonnées',reference:base.id,profil,...fields,website:a.website})
       .then(stored=>{const r={...base,stored,contact:fields};setReceipt(r);try{sessionStorage.setItem('lpsa-receipt',JSON.stringify(r));}catch{/* Keep receipt in component state. */}setContact('sent');return r;})
       .catch(err=>{setContact('idle');moved.current=true;setDir(-1);setQi(order.indexOf('org'));setError(err instanceof Error?err.message:unavailable);return null;});
   }
@@ -142,7 +144,7 @@ export default function QuoteForm({demo}:{demo:boolean}){
       if(!skip){
         const number=(v:string)=>v.trim()===''?null:Math.max(0,Math.round(Number(v.replace(/\s/g,''))||0));
         const details:Details={event:a.event.trim(),city:a.city.trim(),postalCode:a.postalCode.trim(),date:a.date,volume:number(a.volume),annualVolume:number(a.annualVolume),transport:a.transport||'à définir',message:a.message.trim()};
-        await deliver(async()=>r.stored!==false&&await sendToCrm(`/api/leads/${r.id}/`,'PATCH',{token:r.token,...details},[404]),{etape:'2 — Détails',reference:r.id,...r.contact,evenement:details.event,ville:details.city,'code-postal':details.postalCode,date:details.date,volume:details.volume?.toString()??'','volume-annuel':details.annualVolume?.toString()??'',transport:details.transport,message:details.message});
+        await deliver(async()=>r.stored!==false&&await sendToCrm(`/api/leads/${r.id}/`,'PATCH',{token:r.token,...details},[404]),{etape:'2 — Détails',reference:r.id,profil,...r.contact,evenement:details.event,ville:details.city,'code-postal':details.postalCode,date:details.date,volume:details.volume?.toString()??'','volume-annuel':details.annualVolume?.toString()??'',transport:details.transport,message:details.message});
       }
       try{sessionStorage.removeItem('lpsa-receipt');}catch{}moved.current=true;setDone(true);
     }catch(err){setError(err instanceof Error?err.message:'Une erreur est survenue.');}finally{setPending(false);}
@@ -231,7 +233,6 @@ export default function QuoteForm({demo}:{demo:boolean}){
       <div className="qf-field"><label htmlFor="tf-volume">Pour cet événement</label>{field('volume',{type:'number',inputMode:'numeric',min:0,max:10000000,placeholder:'Ex. 5 000'},true)}</div>
       <div className="qf-field"><label htmlFor="tf-annualVolume">Par an, si vous en organisez plusieurs</label>{field('annualVolume',{type:'number',inputMode:'numeric',min:0,max:100000000,placeholder:'Ex. 40 000'})}</div>
     </div>
-    {a.need==='lavage'&&<p className="qf-note"><span aria-hidden="true">i</span>Le lavage commence à 3 000 gobelets par événement.</p>}
     {a.need==='vaisselle'&&<p className="qf-note"><span aria-hidden="true">i</span>Pour la vaisselle, le minimum de commande est de 1 500 € pour la location et le lavage ; le transport est en supplément.</p>}
     {ok('OK',isEmpty(a.volume,a.annualVolume))}
   </>;

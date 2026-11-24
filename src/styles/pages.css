@@ -19,7 +19,8 @@
 .dive-copy-1 h1{animation:hero-in 1.4s .2s var(--ease) both}
 .dive-copy-1 .lead{animation:hero-in 1.4s .35s var(--ease) both}
 .dive-copy-1 .cta-row{animation:hero-in 1.4s .5s var(--ease) both}
-@keyframes hero-in{from{opacity:0;transform:translateY(40px);filter:blur(8px)}}
+/* No opacity here: text hidden at first paint is ignored by the Largest Contentful Paint measure. */
+@keyframes hero-in{from{transform:translateY(28px)}}
 .depth{position:absolute;z-index:2;right:var(--gutter);top:50%;translate:0 -50%;display:flex;flex-direction:column;align-items:center;gap:14px;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--soft)}
 .depth-value{font-family:var(--display);font-size:22px;letter-spacing:0;color:#fff;font-variant-numeric:tabular-nums;min-width:4ch;text-align:center}
 .depth-track{position:relative;width:1px;height:min(38vh,320px);background:repeating-linear-gradient(var(--line-strong) 0 1px,transparent 1px 16px)}
@@ -454,3 +455,43 @@
   .partner-logos .logo{width:46%}
   .hero-facts strong{font-size:36px}
 }
+
+/* ================= Pages par profil ================= */
+.persona-hero{padding-right:min(38vw,520px)}
+.persona-orb{position:absolute!important;right:max(var(--gutter),calc((100vw - var(--wrap))/2));top:56%;translate:0 -50%;display:grid;place-items:center;width:min(26vw,340px);aspect-ratio:1;margin:0!important;border-radius:50%;border:1px solid var(--line-strong);background:radial-gradient(circle at 30% 25%,#8fdce84d,#0c3a4b66 55%,#04151f99);box-shadow:inset 0 2px 0 #ffffff1f,0 0 120px #72c6d433,0 40px 80px -30px #000;animation:poster-float 8s ease-in-out infinite}
+.persona-orb:before{content:'';position:absolute;inset:-22px;border-radius:50%;border:1px dashed var(--line-strong);animation:orb-spin 60s linear infinite}
+.persona-orb svg{width:44%;height:44%;fill:none;stroke:#fff;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 18px var(--aqua))}
+@keyframes orb-spin{to{transform:rotate(360deg)}}
+.pain h3{font-size:clamp(22px,2vw,26px)}
+.arg-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:var(--line)}
+.arg-grid li{padding:clamp(24px,3vw,36px);background:#061e2b;display:flex;flex-direction:column;gap:10px;transition:background .3s}
+.arg-grid li:hover{background:#0a2c3c}
+.arg-grid h3{font-size:22px}
+.arg-grid p{color:var(--soft)}
+.arg-check{display:grid;place-items:center;width:40px;height:40px;margin-bottom:6px;border-radius:50%;background:#72c6d426;border:1px solid #8fdce859}
+.arg-check svg{width:20px;height:20px;fill:none;stroke:var(--aqua);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.service-links{display:grid;gap:14px;margin-top:6px}
+.service-link{padding:22px 26px;gap:6px}
+.service-link h3{font-size:22px}
+.service-link .card-cta{padding-top:4px}
+.engage-linklist{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.persona-chips,.who-grid{display:grid;gap:16px}
+.persona-chips{grid-template-columns:repeat(4,minmax(0,1fr))}
+.persona-chips a{display:flex;align-items:center;gap:14px;min-height:64px;padding:14px 20px;border-radius:20px;border:1px solid var(--line);background:var(--glass);text-decoration:none;font-weight:500;transition:border-color .3s,transform .4s var(--ease)}
+.persona-chips a:hover{border-color:var(--aqua);transform:translateY(-3px)}
+.persona-chips svg{flex-shrink:0;width:26px;height:26px;fill:none;stroke:var(--aqua);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.who-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+.who-card{padding:26px 24px}
+.who-card h3{font-size:21px}
+.who-card p{font-size:15px;line-height:1.55}
+.footer-cols{grid-template-columns:repeat(4,1fr)}
+.footer-top{grid-template-columns:.7fr 2fr}
+@media(max-width:1280px){.who-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:1000px){
+  .persona-hero{padding-right:var(--gutter)}
+  .persona-orb{display:none}
+  .arg-grid,.persona-chips,.who-grid{grid-template-columns:1fr 1fr}
+  .footer-top{grid-template-columns:minmax(0,1fr)}
+  .footer-cols{grid-template-columns:1fr 1fr}
+}
+@media(max-width:760px){.arg-grid,.persona-chips,.who-grid,.footer-cols{grid-template-columns:1fr}}

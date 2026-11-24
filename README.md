@@ -87,3 +87,8 @@ En l’absence de configuration de base, seules les lectures publiques du blog u
 ## Petits lots et location de vaisselle (novembre 2026)
 - Nouveau besoin `petits-lots` (« Petit événement ou association ») dans le formulaire. Netlify Forms le reçoit déjà. Pour l’enregistrer aussi dans Supabase, appliquer `supabase/migrations/20261124080000_small_batches_need.sql` dans le SQL Editor du projet, comme les migrations précédentes.
 - Page `/prestations/location-vaisselle/` : réceptions (mariages, banquets, repas d’affaires), service tout compris avec coordination traiteur, partenariat August Events et catalogue de vaisselle uniquement (`src/data/vaisselle-august.json`, photos dans `public/partners/august-events/`). Les articles choisis sont transmis dans le message de la demande de devis. Aucun prix n’est affiché : tarifs et disponibilités sur devis.
+
+## Pages par profil et performance (novembre 2026)
+- Cinq pages `/pour/…` (clubs sportifs, restaurants d’entreprise, traiteurs, comités des fêtes, collectivités et mairies), générées depuis `src/data/personas.ts` par `src/pages/pour/[persona].astro`, avec données structurées (fil d’Ariane, service, FAQ). Leur bouton de devis transmet le profil à Netlify Forms (champ `profil`).
+- Le seuil « dès 3 000 gobelets » n’est plus affiché.
+- Performance : styles intégrés aux pages, polices préchargées, images de la séquence chargées à l’approche. La scène 3D ne se charge qu’au premier geste du visiteur (défilement, souris, toucher) : les machines de mesure sans carte graphique affichent donc le logo statique.

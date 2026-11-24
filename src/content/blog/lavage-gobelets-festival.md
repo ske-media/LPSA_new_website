@@ -36,6 +36,6 @@ Le lavage comprend un travail de nettoyage, de séchage et de remise en conditio
 
 Préparez le volume par format, le nombre de jours, les éventuelles rotations, le lieu de collecte, la date attendue de restitution et la provenance du parc. Ajoutez les contraintes d’accès et la possibilité de déposer les caisses vous-même.
 
-La Plonge s’Adapte étudie le [lavage de gobelets](/prestations/lavage-gobelets/) dès 3 000 pièces par événement, en priorité en Haute-Savoie, Savoie et Ain. Pour un festival récurrent, présentez aussi votre calendrier annuel : il permet de préparer une organisation qui se répète.
+La Plonge s’Adapte étudie le [lavage de gobelets](/prestations/lavage-gobelets/) de votre événement, en priorité en Haute-Savoie, Savoie et Ain. Pour un festival récurrent, présentez aussi votre calendrier annuel : il permet de préparer une organisation qui se répète.
 
 [Préparer le lavage de mon festival](/devis/?besoin=lavage)

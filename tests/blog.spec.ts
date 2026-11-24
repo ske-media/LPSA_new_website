@@ -19,6 +19,7 @@ test('editor saves draft, previews sanitized content, schedules and publishes th
 });
 test('3D scene responds to scroll without moving the document automatically',async({page})=>{
   await page.goto('/');const scene=page.locator('#cup-story');
+  await page.evaluate(()=>scrollTo(0,document.querySelector('#cup-story')!.getBoundingClientRect().top+scrollY));
   await expect(scene).toHaveAttribute('data-scene',/ready|fallback/,{timeout:15000});
   if(await scene.getAttribute('data-scene')==='fallback')return;
   const start=Number(await scene.getAttribute('data-progress'));

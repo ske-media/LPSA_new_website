@@ -42,3 +42,12 @@ test('tableware catalogue selection prefills the quote, small batches are offere
   await link.click();await expect(page.getByText('Question 2 sur 10')).toBeVisible();
   await page.goto('/devis/');await expect(page.getByRole('button',{name:/Petit événement ou association/})).toBeVisible();
 });
+test('audience pages carry their own arguments, structured data and profile to the quote',async({page,request})=>{
+  for(const slug of ['clubs-sportifs','restaurants-entreprise','traiteurs','comites-des-fetes','collectivites-mairies']){
+    const html=await (await request.get(`/pour/${slug}/`)).text();
+    expect(html).toContain('"@type":"FAQPage"');expect(html).toContain(`profil=${slug}`);expect(html).not.toMatch(/3[\s  ]000 (gobelets|pièces)/);
+  }
+  await page.goto('/pour/traiteurs/');await expect(page.getByRole('heading',{level:1})).toContainText('Traiteurs');
+  await page.getByRole('link',{name:'Demander un devis'}).first().click();await expect(page).toHaveURL(/besoin=vaisselle&profil=traiteurs/);
+  expect(await (await request.get('/sitemap.xml')).text()).toContain('/pour/collectivites-mairies/');
+});

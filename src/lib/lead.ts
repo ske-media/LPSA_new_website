@@ -38,3 +38,6 @@ export function qualify(lead:Lead):string[] {
   if(lead.need==='petits-lots')tags.push('Petit lot');
   return tags.length?tags:['À qualifier'];
 }
+
+/** Audience pages (/pour/…): slug → label sent with the request so the team knows who is asking. */
+export const profils:Record<string,string>={'clubs-sportifs':'Club sportif','restaurants-entreprise':'Restaurant d’entreprise','traiteurs':'Traiteur','comites-des-fetes':'Comité des fêtes','collectivites-mairies':'Collectivité ou mairie'};

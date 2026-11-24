@@ -38,6 +38,6 @@ Une prestation extérieure apporte surtout un périmètre et un calendrier conve
 
 Pour obtenir une proposition exploitable, transmettez les quantités par format, la ville, les dates, le besoin de transport et la date de retour attendue. Si les chiffres sont encore estimatifs, donnez une fourchette et précisez ce qui sera confirmé plus tard.
 
-La Plonge s’Adapte propose le [lavage dès 3 000 gobelets par événement](/prestations/lavage-gobelets/). Pour un programme annuel, les volumes et la récurrence sont étudiés ensemble. Vous pouvez préparer votre organisation avec notre [guide sur les collectes et livraisons](/blog/collecte-livraison-gobelets-evenement/).
+La Plonge s’Adapte propose le [lavage de gobelets](/prestations/lavage-gobelets/) pour les événements de toutes tailles. Pour un programme annuel, les volumes et la récurrence sont étudiés ensemble. Vous pouvez préparer votre organisation avec notre [guide sur les collectes et livraisons](/blog/collecte-livraison-gobelets-evenement/).
 
 [Demander un devis adapté à mes volumes](/devis/?besoin=lavage)

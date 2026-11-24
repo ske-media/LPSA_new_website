@@ -14,10 +14,11 @@ export function mountCinematic(root: HTMLElement) {
    if(cache.size>cacheLimit){const keys=[...cache.keys()].sort((a,b)=>Math.abs(b-wanted)-Math.abs(a-wanted));for(const key of keys.slice(0,cache.size-cacheLimit)){cache.get(key)?.close();cache.delete(key);}}
   }catch{if(frame===0)root.dataset.scene='fallback';}finally{pending.delete(frame);if(!disposed&&wanted!==frame&&!cache.has(wanted))void fetchFrame(wanted);}
  }
- function update(){raf=0;const bounds=root.getBoundingClientRect();const progress=Math.max(0,Math.min(1,-bounds.top/Math.max(1,bounds.height-innerHeight)));root.dataset.progress=String(progress);wanted=Math.round(progress*95);draw(wanted);void fetchFrame(wanted);for(const offset of [-1,1,-2,2])void fetchFrame(wanted+offset);
+ function update(){raf=0;if(!near)return;const bounds=root.getBoundingClientRect();const progress=Math.max(0,Math.min(1,-bounds.top/Math.max(1,bounds.height-innerHeight)));root.dataset.progress=String(progress);wanted=Math.round(progress*95);draw(wanted);void fetchFrame(wanted);for(const offset of [-1,1,-2,2])void fetchFrame(wanted+offset);
  const labels=['La pyramide du lendemain','Le passage de relais','Le relais est pris'];const chapter=Math.min(2,Math.floor(progress*3));const label=root.querySelector('#scene-label');if(label)label.textContent=labels[chapter];const counter=root.querySelector('#scene-counter');if(counter)counter.textContent=`0${chapter+1} / 03`;const bar=root.querySelector<HTMLElement>('.scene-progress span');if(bar)bar.style.width=`${progress*100}%`;
  }
  const schedule=()=>{if(!raf)raf=requestAnimationFrame(update);};
- window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);update();
+ window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);
+ let near=false;const io=new IntersectionObserver(([e])=>{if(e.isIntersecting){near=true;io.disconnect();update();}},{rootMargin:'600px'});io.observe(root);
  document.addEventListener('astro:before-swap',()=>{disposed=true;window.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);cancelAnimationFrame(raf);cache.forEach(bitmap=>bitmap.close());},{once:true});
 }
