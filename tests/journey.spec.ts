@@ -32,3 +32,13 @@ test('home and quote fit mobile and keep HTML headings',async({page})=>{
   await page.setViewportSize({width:390,height:844});await page.goto('/');await expect(page.getByRole('heading',{level:1})).toContainText('Le public est parti');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   await page.screenshot({path:'test-results/home-mobile.png',fullPage:true});await page.goto('/devis/');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
+test('tableware catalogue selection prefills the quote, small batches are offered',async({page})=>{
+  await page.goto('/prestations/location-vaisselle/');await page.evaluate(()=>localStorage.clear());await page.reload();
+  await page.locator('#catalogue').scrollIntoViewIfNeeded();
+  await page.locator('astro-island[component-url*="VaisselleCatalog"]:not([ssr])').waitFor({state:'attached'});
+  await page.getByRole('button',{name:/^Verrerie/}).click();await expect(page.locator('.catalog-count')).toContainText('Verrerie');
+  await page.locator('.catalog-add').first().click();
+  const link=page.locator('.catalog-bar .btn');await expect(link).toHaveAttribute('href',/besoin=vaisselle&selection=/);
+  await link.click();await expect(page.getByText('Question 2 sur 10')).toBeVisible();
+  await page.goto('/devis/');await expect(page.getByRole('button',{name:/Petit événement ou association/})).toBeVisible();
+});

@@ -26,7 +26,8 @@ async function sendToCrm(url:string,method:string,payload:unknown,tolerate:numbe
 const descriptions:Record<Need,string>={
   lavage:'Vos gobelets lavés, séchés, comptés et reconditionnés, dès 3 000 pièces.',
   gobelets:'Des gobelets réutilisables pour votre événement, avec leur retour au lavage.',
-  vaisselle:'Verres, assiettes et couverts : la location et le lavage réunis.',
+  vaisselle:'Banquets, mariages, repas d’affaires : vaisselle livrée, reprise et lavée.',
+  'petits-lots':'Association, fête de village, kermesse : une formule pour les petits volumes.',
   conseil:'Être accompagné pour choisir et acheter votre propre parc.',
   stockage:'Votre parc de gobelets gardé entre deux événements.',
 };
@@ -35,11 +36,12 @@ const icons:Record<Need,ReactNode>={
   lavage:icon(<><path d="M12 3c3 4 5 6.5 5 9a5 5 0 0 1-10 0c0-2.5 2-5 5-9z"/><path d="M9.5 13.5a2.5 2.5 0 0 0 2.5 2.5"/></>),
   gobelets:icon(<><path d="M6 4h12l-1.6 15.2a1 1 0 0 1-1 .8H8.6a1 1 0 0 1-1-.8z"/><path d="M6.6 9h10.8"/></>),
   vaisselle:icon(<><circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="12" r="3"/><path d="M3 4v6a1.5 1.5 0 0 0 1.5 1.5V20M21 4c-1.5 1-2 3-2 5s.8 2.5 2 2.5V20"/></>),
+  'petits-lots':icon(<><circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2.5 20a5.5 5.5 0 0 1 11 0M10.5 20a5.5 5.5 0 0 1 11 0"/></>),
   conseil:icon(<><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></>),
   stockage:icon(<><path d="M3 8l9-5 9 5v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M7 20v-8h10v8M7 15h10"/></>),
 };
 const transports:[Details['transport'],string][]=[['collecte et livraison','Collecte et livraison'],['livraison','Livraison uniquement'],['collecte','Collecte uniquement'],['dépôt et retrait','Je dépose et je récupère'],['à définir','Je ne sais pas encore']];
-const LETTERS='ABCDE';
+const LETTERS='ABCDEF';
 
 // One question per screen. The contact is sent after "org"; everything after it is optional.
 const order=['need','name','reach','org','event','date','place','volume','transport','message'] as const;
@@ -62,6 +64,9 @@ export default function QuoteForm({demo}:{demo:boolean}){
   useEffect(()=>{
     const query=new URLSearchParams(location.search),param=query.get('besoin'),volume=(query.get('volume')||'').replace(/\D/g,'').slice(0,8);
     if(volume&&volume!=='0')setA(p=>({...p,volume}));
+    // Selection built on the tableware catalogue page: "Name × qty" lines.
+    const selection=(query.get('selection')||'').split('|').map(l=>l.replace(/[\u0000-\u001f<>]/g,'').trim()).filter(Boolean).slice(0,60);
+    if(selection.length)setA(p=>({...p,message:(`Ma sélection de vaisselle :\n${selection.map(l=>`- ${l}`).join('\n')}`).slice(0,3800)}));
     if(needs.includes(param as Need)){setA(p=>({...p,need:param as Need}));setQi(1);}
     try{const saved=sessionStorage.getItem('lpsa-receipt');if(saved){const r=JSON.parse(saved);if(typeof r.id==='string'&&typeof r.token==='string'){setReceipt(r);setContact('sent');setQi(firstDetail);}}}catch{/* A disabled session store does not prevent sending. */}
   },[]);

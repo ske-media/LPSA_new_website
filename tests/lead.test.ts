@@ -20,5 +20,5 @@ test('qualification respects geography, strict outside threshold and small event
   assert.deepEqual(qualify(lead),['Cœur de cible']);
   lead.details!.postalCode='69000';lead.details!.volume=100000;assert.deepEqual(qualify(lead),['À qualifier']);
   lead.details!.volume=100001;assert.deepEqual(qualify(lead),['Grand marché à étudier']);
-  lead.details!.volume=2500;assert.deepEqual(qualify(lead),['Sous le seuil événement']);
+  lead.details!.volume=2500;assert.deepEqual(qualify(lead),['Formule petits lots']);
 });

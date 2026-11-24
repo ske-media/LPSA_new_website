@@ -83,3 +83,7 @@ Le schéma a été appliqué au projet `bxhnbrabukdsefarbjtd` via le SQL Editor,
 Dix guides originaux ont été ajoutés au blog, à l’accueil, aux pages de prestations et aux pages RSE/OETH. Sources Markdown et métadonnées : `src/content/blog/`. Les dix enregistrements ont également été insérés dans Supabase LPSA 2. Le seed `supabase/seeds/initial-blog.sql` préserve les slugs existants.
 
 En l’absence de configuration de base, seules les lectures publiques du blog utilisent cette collection versionnée. Dès que Supabase est configuré, les données du CMS font autorité ; une erreur de base ou une dépublication n’active pas de repli vers une ancienne version. Ce mécanisme ne concerne pas les leads et n’ouvre aucun accès administrateur. Voir `docs/editorial/README.md`.
+
+## Petits lots et location de vaisselle (novembre 2026)
+- Nouveau besoin `petits-lots` (« Petit événement ou association ») dans le formulaire. Netlify Forms le reçoit déjà. Pour l’enregistrer aussi dans Supabase, appliquer `supabase/migrations/20261124080000_small_batches_need.sql` dans le SQL Editor du projet, comme les migrations précédentes.
+- Page `/prestations/location-vaisselle/` : réceptions (mariages, banquets, repas d’affaires), service tout compris avec coordination traiteur, partenariat August Events et catalogue de 180 références (`src/data/vaisselle-august.json`, photos dans `public/partners/august-events/`). Les articles choisis sont transmis dans le message de la demande de devis. Aucun prix n’est affiché : tarifs et disponibilités sur devis.

@@ -3,22 +3,27 @@ import Layout from '../layouts/Layout.astro';
 import Logo from '../components/Logo.astro';
 import CupStory from '../components/CupStory.astro';
 import ParkEstimator from '../components/ParkEstimator';
+import PartnerAugust from '../components/PartnerAugust.astro';
+import vaisselle from '../data/vaisselle-august.json';
 import {editorialPosts} from '../lib/editorial';
 const featured=['lavage-gobelets-festival','combien-gobelets-prevoir-evenement','gobelets-marche-noel-vin-chaud'].map(slug=>editorialPosts.find(p=>p.slug===slug)!);
 const icons={
   lavage:'<path d="M12 3c3 4 5 6.5 5 9a5 5 0 0 1-10 0c0-2.5 2-5 5-9z"/><path d="M9.5 13.5a2.5 2.5 0 0 0 2.5 2.5"/>',
   gobelets:'<path d="M6 4h12l-1.6 15.2a1 1 0 0 1-1 .8H8.6a1 1 0 0 1-1-.8z"/><path d="M6.6 9h10.8"/>',
   vaisselle:'<circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="12" r="3"/><path d="M3 4v6a1.5 1.5 0 0 0 1.5 1.5V20M21 4c-1.5 1-2 3-2 5s.8 2.5 2 2.5V20"/>',
+  petits:'<circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2.5 20a5.5 5.5 0 0 1 11 0M10.5 20a5.5 5.5 0 0 1 11 0"/>',
 };
 const solutions=[
   {key:'lavage',n:'01',title:'Lavage de gobelets',lead:'Vous avez les gobelets.',text:'Nous prenons le relais pour le lavage, le séchage, le comptage et le conditionnement.',points:['Dès 3 000 gobelets par événement','Collecte et livraison possibles'],href:'/prestations/lavage-gobelets/',cta:'Organiser mon lavage'},
   {key:'gobelets',n:'02',title:'Location de gobelets',lead:'Il vous manque un parc.',text:'Louez des gobelets adaptés à vos boissons et à vos volumes. Le lavage est prévu dans l’organisation.',points:['Formats et quantités sur mesure','Retour au lavage organisé'],href:'/prestations/location-gobelets/',cta:'Louer des gobelets'},
-  {key:'vaisselle',n:'03',title:'Location de vaisselle',lead:'Il y a aussi les repas.',text:'Plastique réutilisable, porcelaine, inox et verrerie : préparez la vaisselle et son lavage ensemble.',points:['Location et lavage réunis','Dès 1 500 € de commande'],href:'/prestations/location-vaisselle/',cta:'Équiper mon événement'},
+  {key:'vaisselle',n:'03',title:'Location de vaisselle',lead:'Mariage, banquet, repas d’affaires.',text:'Une vaisselle élégante livrée prête à servir, reprise et lavée, en lien avec votre traiteur.',points:[`${vaisselle.length} références avec August Events`,'Livraison, reprise et lavage'],href:'/prestations/location-vaisselle/',cta:'Composer ma table'},
+  {key:'petits',n:'04',title:'Petits événements & associations',lead:'Pas besoin d’être un festival.',text:'Fête de village, kermesse, repas associatif : une formule pensée pour les petits volumes de gobelets ou de vaisselle.',points:['Gobelets ou vaisselle','Une solution à votre échelle'],href:'/devis/?besoin=petits-lots',cta:'Parler de mon événement'},
 ];
-const stats=[{v:3000,suffix:'',unit:'gobelets',text:'minimum par événement pour le lavage'},{v:4,suffix:'',unit:'étapes',text:'lavage, séchage, comptage, conditionnement'},{v:3,suffix:'',unit:'départements',text:'Haute-Savoie, Savoie et Ain'},{v:100000,suffix:'+',unit:'gobelets',text:'au-delà, nous étudions les projets plus lointains'}];
+const stats=[{v:vaisselle.length,suffix:'',unit:'références',text:'de vaisselle et d’arts de la table, avec August Events'},{v:4,suffix:'',unit:'étapes',text:'lavage, séchage, comptage, conditionnement'},{v:3,suffix:'',unit:'départements',text:'Haute-Savoie, Savoie et Ain'},{v:100000,suffix:'+',unit:'gobelets',text:'au-delà, nous étudions les projets plus lointains'}];
 const steps=[{n:'01',title:'On prépare ensemble.',text:'Vos dates, vos volumes, vos formats. Nous définissons le calendrier et les modalités de transport.'},{n:'02',title:'On prend le relais.',text:'Collecte organisée si vous le souhaitez, puis lavage, séchage, comptage et conditionnement.'},{n:'03',title:'Votre parc repart.',text:'Retrait ou livraison selon le calendrier convenu. Prêt pour le prochain rendez-vous.'}];
 const faq=[
-  {q:'À partir de quel volume intervenez-vous ?',a:'Le lavage est proposé dès 3 000 gobelets par événement. Pour un programme récurrent, présentez-nous votre calendrier et votre volume annuel.'},
+  {q:'À partir de quel volume intervenez-vous ?',a:'Pour les grands événements, le lavage est proposé dès 3 000 gobelets. Association, fête de village ou petit volume : nous avons aussi une formule petits lots, parlons-en. Pour un programme récurrent, présentez-nous votre calendrier et votre volume annuel.'},
+  {q:'Louez-vous aussi de la vaisselle pour un mariage ou un banquet ?',a:'Oui. Avec notre partenaire August Events, nous proposons un large catalogue de vaisselle, livrée prête à servir, reprise après le service et lavée par notre équipe. Nous pouvons nous coordonner directement avec votre traiteur.'},
   {q:'Vous organisez aussi le transport ?',a:'Oui. Nous organisons la collecte et la livraison avec nos partenaires de transport. Le service est chiffré séparément dans votre proposition.'},
   {q:'Et si nous n’avons pas de gobelets ?',a:'Nous pouvons préparer une location ou vous accompagner dans le choix d’un parc à acheter.'},
   {q:'Intervenez-vous au-delà des Savoies et de l’Ain ?',a:'Pour les marchés de plus de 100 000 gobelets, nous étudions les possibilités au-delà du 74, du 73 et du 01, selon le calendrier et la logistique.'},
@@ -35,9 +40,9 @@ const faqLd={'@context':'https://schema.org','@type':'FAQPage',mainEntity:faq.ma
       <canvas class="dive-canvas" aria-hidden="true"></canvas>
       <div class="dive-poster" aria-hidden="true"><Logo id="lg-hero" variant="mark" /></div>
       <div class="dive-copy dive-copy-1">
-        <p class="label">Lavage & location de gobelets · Dès 3 000 pièces</p>
+        <p class="label">Gobelets · Vaisselle · Lavage</p>
         <h1>Le public est parti. <em>Les gobelets restent.</em></h1>
-        <p class="lead">Vous créez les souvenirs. Nous prenons la suite : lavage, location et logistique pour vos grands événements en Haute-Savoie, Savoie et Ain.</p>
+        <p class="lead">Vous créez les souvenirs. Nous prenons la suite : gobelets, vaisselle de réception et lavage, du festival au mariage, en Haute-Savoie, Savoie et Ain.</p>
         <div class="cta-row"><a class="btn btn-primary btn-lg" href="/devis/">Préparer mon événement <span aria-hidden="true">→</span></a><a class="btn btn-ghost btn-lg" href="#solutions">Voir les prestations</a></div>
       </div>
       <div class="dive-copy dive-copy-2">
@@ -84,7 +89,21 @@ const faqLd={'@context':'https://schema.org','@type':'FAQPage',mainEntity:faq.ma
         <span class="card-cta">{s.cta} <span aria-hidden="true">→</span></span>
       </a>)}
     </div>
-    <div class="solutions-more" data-reveal><p>Vous souhaitez <strong>acheter</strong> ou <strong>stocker</strong> votre parc ?</p><div class="cta-row"><a class="btn btn-ghost btn-sm" href="/devis/?besoin=conseil">Conseil à l’achat</a><a class="btn btn-ghost btn-sm" href="/devis/?besoin=stockage">Stockage de parc</a></div></div>
+    <div class="solutions-more" data-reveal><p>Vous souhaitez <strong>acheter</strong> ou <strong>stocker</strong> votre parc de gobelets ?</p><div class="cta-row"><a class="btn btn-ghost btn-sm" href="/devis/?besoin=conseil">Conseil à l’achat</a><a class="btn btn-ghost btn-sm" href="/devis/?besoin=stockage">Stockage de parc</a></div></div>
+  </section>
+
+  <!-- Réceptions -->
+  <section class="receptions" aria-label="Vaisselle de réception">
+    <div class="wrap receptions-inner">
+      <div class="receptions-text" data-reveal>
+        <p class="label">Mariages, banquets, repas d’affaires</p>
+        <h2>La vaisselle aussi, <em>et sans la vaisselle à faire.</em></h2>
+        <p class="lead">Porcelaine, verrerie fine, couverts dorés : livrés prêts à servir, repris après le service et lavés par notre équipe. Nous nous coordonnons avec votre traiteur si nécessaire.</p>
+        <div class="cta-row"><a class="btn btn-primary btn-lg" href="/prestations/location-vaisselle/">Découvrir la location de vaisselle <span aria-hidden="true">→</span></a></div>
+      </div>
+      <div class="receptions-mosaic" aria-hidden="true" data-reveal style="--d:.1s">{[2,38,60,96,118,148].map((k,i)=><img src={vaisselle[k%vaisselle.length].image} alt="" width="420" height="420" loading="lazy" style={`--i:${i}`} />)}</div>
+    </div>
+    <div class="wrap"><PartnerAugust id="pa-home" compact /></div>
   </section>
 
   <!-- Estimateur -->

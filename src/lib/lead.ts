@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const needs = ['lavage', 'gobelets', 'vaisselle', 'conseil', 'stockage'] as const;
+export const needs = ['lavage', 'gobelets', 'vaisselle', 'petits-lots', 'conseil', 'stockage'] as const;
 export const statuses = ['À compléter', 'Nouvelle demande', 'À qualifier', 'Devis envoyé', 'Gagnée', 'Perdue', 'Hors cible'] as const;
 const short = z.string().trim().max(200);
 export const contactSchema = z.object({
@@ -27,13 +27,14 @@ export type Lead = {
   id:string; need: typeof needs[number]; name:string; email:string; phone:string; organization:string;
   created_at:string; updated_at:string; status:typeof statuses[number]; details:Details|null;
 };
-export const labels:Record<Lead['need'],string> = {lavage:'Lavage de gobelets',gobelets:'Location de gobelets',vaisselle:'Location de vaisselle',conseil:'Conseil à l’achat',stockage:'Stockage de parc'};
+export const labels:Record<Lead['need'],string> = {lavage:'Lavage de gobelets',gobelets:'Location de gobelets',vaisselle:'Location de vaisselle','petits-lots':'Petit événement ou association',conseil:'Conseil à l’achat',stockage:'Stockage de parc'};
 export function qualify(lead:Lead):string[] {
   const d=lead.details;if(!d)return ['À préciser'];const tags:string[]=[];
   if((d.annualVolume??0)>0)tags.push('Récurrence à étudier');
   const local=['74','73','01'].includes(d.postalCode.slice(0,2));
   if(d.volume!==null && d.volume>=50_000 && local)tags.push('Cœur de cible');
   if(d.volume!==null && d.volume>100_000 && !local)tags.push('Grand marché à étudier');
-  if(lead.need==='lavage' && d.volume!==null && d.volume<3000)tags.push('Sous le seuil événement');
+  if(lead.need==='lavage' && d.volume!==null && d.volume<3000)tags.push('Formule petits lots');
+  if(lead.need==='petits-lots')tags.push('Petit lot');
   return tags.length?tags:['À qualifier'];
 }

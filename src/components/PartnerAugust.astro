@@ -1,0 +1,21 @@
+---
+// Partner block: La Plonge s'Adapte × August Events. Facts from august-events.fr (about page, footer).
+import Logo from './Logo.astro';
+interface Props { id:string; compact?:boolean }
+const {id,compact=false}=Astro.props;
+---
+<section class:list={['partner',{compact}]} aria-labelledby={`${id}-title`}>
+  <div class="partner-logos" data-reveal>
+    <Logo id={`${id}-lpsa`} variant="vertical" />
+    <span class="partner-x" aria-hidden="true">×</span>
+    <img src="/partners/august-events/logo-blanc.webp" alt="August Events, location événementielle" width="480" height="385" loading="lazy" />
+  </div>
+  <div class="partner-text" data-reveal style="--d:.1s">
+    <p class="label partner-label">Notre partenaire</p>
+    <h2 id={`${id}-title`}>August Events, <em>l’art de recevoir.</em></h2>
+    <p class="lead">Depuis 2015, August Events habille les plus belles réceptions de la région. Une maison familiale née à Reyrieux, dans l’Ain, qui a fait de la location événementielle un véritable savoir-faire : vaisselle, verrerie, mobilier, décoration et chapiteaux, choisis avec un goût très sûr.</p>
+    {!compact&&<p>Mariages, réceptions privées, événements professionnels : leurs collections conjuguent élégance et fiabilité, et leurs clients saluent une équipe accueillante et réactive. Avec leurs agences de l’Ain, de Haute-Savoie à La Roche-sur-Foron et de Bourgogne, ils sont tout proches de vos événements.</p>}
+    <p>Ensemble, nous réunissons <strong>leur catalogue d’exception</strong> et <strong>notre métier du lavage</strong> : une vaisselle superbe à table, et plus rien à gérer après le service.</p>
+    {compact&&<div class="cta-row"><a class="btn btn-primary" href="/prestations/location-vaisselle/">Découvrir la vaisselle <span aria-hidden="true">→</span></a><a class="btn btn-ghost" href="/prestations/location-vaisselle/#catalogue">Parcourir le catalogue</a></div>}
+  </div>
+</section>
