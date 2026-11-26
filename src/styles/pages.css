@@ -495,3 +495,5 @@
   .footer-cols{grid-template-columns:1fr 1fr}
 }
 @media(max-width:760px){.arg-grid,.persona-chips,.who-grid,.footer-cols{grid-template-columns:1fr}}
+
+.footer-address{font-style:normal;line-height:1.6}

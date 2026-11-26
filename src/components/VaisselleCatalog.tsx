@@ -27,7 +27,7 @@ export default function VaisselleCatalog(){
     <p className="catalog-count" aria-live="polite">{shown.length} article{shown.length>1?'s':''}{cat!=='Tout'?` · ${cat}`:''}</p>
     <ul className="catalog-grid">
       {shown.slice(0,limit).map(i=>{const n=sel[i.id]||0;return <li key={i.id} className={`catalog-item${n?' is-chosen':''}`}>
-        <div className="catalog-photo"><img src={i.image} alt="" loading="lazy" width="420" height="420" /></div>
+        <div className="catalog-photo"><img src={i.image} alt={`${i.name}, location de vaisselle`} loading="lazy" width="420" height="420" /></div>
         <div className="catalog-body">
           <span className="catalog-cat">{i.category}</span>
           <h3>{i.name}</h3>

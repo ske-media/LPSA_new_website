@@ -108,7 +108,7 @@ const faqLd={'@context':'https://schema.org','@type':'FAQPage',mainEntity:faq.ma
         <p class="lead">Porcelaine, verrerie fine, couverts dorés : livrés prêts à servir, repris après le service et lavés par notre équipe. Nous nous coordonnons avec votre traiteur si nécessaire.</p>
         <div class="cta-row"><a class="btn btn-primary btn-lg" href="/prestations/location-vaisselle/">Découvrir la location de vaisselle <span aria-hidden="true">→</span></a></div>
       </div>
-      <div class="receptions-mosaic" aria-hidden="true" data-reveal style="--d:.1s">{[2,38,60,96,118,148].map((k,i)=><img src={vaisselle[k%vaisselle.length].image} alt="" width="420" height="420" loading="lazy" style={`--i:${i}`} />)}</div>
+      <div class="receptions-mosaic" data-reveal style="--d:.1s">{[2,38,60,96,118,148].map((k,i)=><img src={vaisselle[k%vaisselle.length].image} alt={`${vaisselle[k%vaisselle.length].name} en location`} width="420" height="420" loading="lazy" style={`--i:${i}`} />)}</div>
     </div>
     <div class="wrap"><PartnerAugust id="pa-home" compact /></div>
   </section>

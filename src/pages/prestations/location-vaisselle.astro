@@ -34,7 +34,7 @@ const ld={'@context':'https://schema.org','@type':'Service',name:'Location de va
   <script type="application/ld+json" set:html={JSON.stringify(ld)} />
   <script type="application/ld+json" set:html={JSON.stringify({'@context':'https://schema.org','@type':'FAQPage',mainEntity:faq.map(f=>({'@type':'Question',name:f.q,acceptedAnswer:{'@type':'Answer',text:f.a}}))})} />
   <section class="page-hero vaisselle-hero">
-    <div class="vaisselle-mosaic" aria-hidden="true">{mosaic.map((m,i)=><img src={m.image} alt="" width="420" height="420" style={`--i:${i}`} loading={i<3?'eager':'lazy'} />)}</div>
+    <div class="vaisselle-mosaic">{mosaic.map((m,i)=><img src={m.image} alt={`${m.name} en location`} width="420" height="420" style={`--i:${i}`} loading={i<3?'eager':'lazy'} />)}</div>
     <p class="crumb"><a href="/">Accueil</a> / <a href="/#solutions">Prestations</a> / <span>Location de vaisselle</span></p>
     <p class="label">Location de vaisselle · Réceptions</p>
     <h1>Du premier verre <em>au dernier couvert.</em></h1>
