@@ -92,3 +92,8 @@ En l’absence de configuration de base, seules les lectures publiques du blog u
 - Cinq pages `/pour/…` (clubs sportifs, restaurants d’entreprise, traiteurs, comités des fêtes, collectivités et mairies), générées depuis `src/data/personas.ts` par `src/pages/pour/[persona].astro`, avec données structurées (fil d’Ariane, service, FAQ). Leur bouton de devis transmet le profil à Netlify Forms (champ `profil`).
 - Le seuil « dès 3 000 gobelets » n’est plus affiché.
 - Performance : styles intégrés aux pages, polices préchargées, images de la séquence chargées à l’approche. La scène 3D ne se charge qu’au premier geste du visiteur (défilement, souris, toucher) : les machines de mesure sans carte graphique affichent donc le logo statique.
+
+## SEO et visibilité dans les IA
+- Titres de 60 caractères environ et descriptions de 155 au plus. Données structurées : entreprise locale (avec catalogue de prestations), services, FAQ, fil d’Ariane, articles.
+- `public/robots.txt` autorise explicitement les robots des moteurs et des assistants IA (OAI-SearchBot, GPTBot, PerplexityBot, ClaudeBot, Google-Extended…) ; `public/llms.txt` résume l’entreprise et ses pages pour les IA. Le mettre à jour quand une page ou un guide est ajouté.
+- Plan du site avec dates de mise à jour.

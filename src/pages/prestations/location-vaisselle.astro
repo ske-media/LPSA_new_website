@@ -30,8 +30,9 @@ const faq=[
 ];
 const ld={'@context':'https://schema.org','@type':'Service',name:'Location de vaisselle événementielle',serviceType:'Location et lavage de vaisselle',provider:{'@type':'LocalBusiness',name:'La Plonge s’Adapte',telephone:'+33787896760'},areaServed:['Haute-Savoie','Savoie','Ain'],description:'Location de vaisselle pour mariages, banquets, repas d’affaires et réceptions : livraison, coordination traiteur, reprise et lavage, en partenariat avec August Events.'};
 ---
-<Layout title="Location de vaisselle pour mariages, banquets et réceptions | La Plonge s’Adapte" description="Mariages, banquets, repas d’affaires : vaisselle livrée prête à servir, reprise et lavée, en lien avec votre traiteur. Un large catalogue de vaisselle avec notre partenaire August Events." hideQuoteButton>
+<Layout title="Location de vaisselle pour mariages et réceptions | Haute-Savoie" description="Mariages, banquets, repas d’affaires : vaisselle livrée prête à servir, reprise et lavée, en lien avec votre traiteur. Haute-Savoie, Savoie et Ain." hideQuoteButton>
   <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  <script type="application/ld+json" set:html={JSON.stringify({'@context':'https://schema.org','@type':'FAQPage',mainEntity:faq.map(f=>({'@type':'Question',name:f.q,acceptedAnswer:{'@type':'Answer',text:f.a}}))})} />
   <section class="page-hero vaisselle-hero">
     <div class="vaisselle-mosaic" aria-hidden="true">{mosaic.map((m,i)=><img src={m.image} alt="" width="420" height="420" style={`--i:${i}`} loading={i<3?'eager':'lazy'} />)}</div>
     <p class="crumb"><a href="/">Accueil</a> / <a href="/#solutions">Prestations</a> / <span>Location de vaisselle</span></p>

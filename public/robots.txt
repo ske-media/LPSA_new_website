@@ -1,5 +1,21 @@
+# Search engines and AI assistants are welcome on every public page.
 User-agent: *
+Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /devis/
+
+# AI search and assistants (ChatGPT, Perplexity, Claude, Gemini): explicitly allowed.
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: GPTBot
+User-agent: PerplexityBot
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /devis/
+
 Sitemap: https://laplongesadapte.com/sitemap.xml
