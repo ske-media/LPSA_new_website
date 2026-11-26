@@ -10,22 +10,35 @@ import manrope300 from '@fontsource/manrope/files/manrope-latin-300-normal.woff2
 import dmSans400 from '@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2?url';
 import Logo from '../components/Logo.astro';
 import {personas} from '../data/personas';
-interface Props { title:string; description?:string; privatePage?:boolean; hideQuoteButton?:boolean; }
-const {title,description='Lavage et location de gobelets et de vaisselle pour vos événements. Collecte et livraison organisées en Haute-Savoie, Savoie et Ain.',privatePage=false,hideQuoteButton=false}=Astro.props;
-const canonical=new URL(Astro.url.pathname,Astro.site);
+import {personasEn} from '../data/personas-en';
+import {ui,langOf,switchPath,hasEnglish,type Lang} from '../i18n';
+interface Props { title:string; description?:string; privatePage?:boolean; hideQuoteButton?:boolean; lang?:Lang; /** Path of this page in the other language; null when it has none (the switch then goes to `switchFallback`). */ alternate?:string|null; switchFallback?:string; }
 const path=Astro.url.pathname;
+const lang:Lang=Astro.props.lang??langOf(path);
+const t=ui[lang];
+const {title,description=t.description,privatePage=false,hideQuoteButton=false}=Astro.props;
+const canonical=new URL(path,Astro.site);
 const internal=path.startsWith('/admin');
-const nav=[{href:'/#solutions',label:'Prestations'},{href:'/prestations/location-vaisselle/',label:'Vaisselle'},{href:'/#pour-qui',label:'Pour qui ?'},{href:'/rse/',label:'Impact & RSE'},{href:'/blog/',label:'Guides'}];
-const business={'@context':'https://schema.org','@type':'LocalBusiness',name:'La Plonge s’Adapte',description:'Entreprise adaptée : lavage et location de gobelets réutilisables et de vaisselle pour les événements.',url:'https://laplongesadapte.com/',telephone:'+33787896760',email:'accueil@laplongesadapte.com',logo:'https://laplongesadapte.com/brand/plonge/logo-vertical.svg',address:{'@type':'PostalAddress',postalCode:'74160',addressLocality:'Neydens',addressRegion:'Haute-Savoie',addressCountry:'FR'},areaServed:['Haute-Savoie','Savoie','Ain'].map(name=>({'@type':'AdministrativeArea',name})),slogan:'Fluide. Profonde. Adaptée.',knowsAbout:['Location de vaisselle','Lavage de gobelets réutilisables','Location de gobelets réutilisables','Réemploi','Entreprise adaptée'],hasOfferCatalog:{'@type':'OfferCatalog',name:'Prestations',itemListElement:[['Location de vaisselle','/prestations/location-vaisselle/'],['Lavage de gobelets','/prestations/lavage-gobelets/'],['Location de gobelets','/prestations/location-gobelets/']].map(([name,url])=>({'@type':'Offer',itemOffered:{'@type':'Service',name,url:`https://laplongesadapte.com${url}`}}))}};
+const other:Lang=lang==='fr'?'en':'fr';
+const {alternate,switchFallback}=Astro.props;
+const bilingual=hasEnglish(path)&&!internal;
+const hasTwin=bilingual&&alternate!==null;
+const otherPath=alternate??(alternate===null?(switchFallback??(other==='en'?'/en/':'/')):switchPath(path,other));
+const frPath=lang==='fr'?path:otherPath,enPath=lang==='en'?path:otherPath;
+const P=(lang==='en'?personasEn:personas).map(p=>({href:`${lang==='en'?'/en':''}/pour/${p.slug}/`,nav:p.nav}));
+const quote=lang==='en'?'/en/devis/':'/devis/';
+const home=lang==='en'?'/en/':'/';
+const business={'@context':'https://schema.org','@type':'LocalBusiness',name:'La Plonge s’Adapte',description:t.business,url:'https://laplongesadapte.com/',telephone:'+33787896760',email:'accueil@laplongesadapte.com',logo:'https://laplongesadapte.com/brand/plonge/logo-vertical.svg',address:{'@type':'PostalAddress',postalCode:'74160',addressLocality:'Neydens',addressRegion:'Haute-Savoie',addressCountry:'FR'},areaServed:['Haute-Savoie','Savoie','Ain'].map(name=>({'@type':'AdministrativeArea',name})),slogan:t.motto,knowsAbout:[...t.knows],availableLanguage:['fr','en'],hasOfferCatalog:{'@type':'OfferCatalog',name:t.services,itemListElement:t.offers.map(([name,url])=>({'@type':'Offer',itemOffered:{'@type':'Service',name,url:`https://laplongesadapte.com${url}`}}))}};
 ---
 <!doctype html>
-<html lang="fr">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{title}</title><meta name="description" content={description} />
     <meta name="robots" content={privatePage?'noindex, nofollow':'index, follow'} />
     {!privatePage && <link rel="canonical" href={canonical} />}
-    <meta property="og:type" content="website" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:locale" content="fr_FR" />
+    {!privatePage && hasTwin && <><link rel="alternate" hreflang="fr" href={new URL(frPath,Astro.site)} /><link rel="alternate" hreflang="en" href={new URL(enPath,Astro.site)} /><link rel="alternate" hreflang="x-default" href={new URL(frPath,Astro.site)} /></>}
+    <meta property="og:type" content="website" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:locale" content={t.locale} />
     <meta property="og:image" content={new URL('/brand/plonge/og.png',Astro.site)} /><meta name="twitter:card" content="summary_large_image" />
     <link rel="preload" href={manrope300} as="font" type="font/woff2" crossorigin /><link rel="preload" href={dmSans400} as="font" type="font/woff2" crossorigin />
     <meta name="theme-color" content="#041722" />
@@ -34,53 +47,49 @@ const business={'@context':'https://schema.org','@type':'LocalBusiness',name:'La
     {!privatePage && <script type="application/ld+json" set:html={JSON.stringify(business)} />}
   </head>
   <body class:list={[{'is-internal':internal,'no-sticky':hideQuoteButton||internal}]}>
-    <a class="skip" href="#main">Aller au contenu</a>
+    <a class="skip" href="#main">{t.skip}</a>
     <div class="scroll-line" aria-hidden="true"><span></span></div>
     <header class="site-header" data-header>
-      <a class="site-brand" href="/" aria-label="La Plonge s’Adapte — accueil"><Logo id="lg-head" /></a>
-      <nav class="site-nav" aria-label="Navigation principale">
-        {nav.map(n=><a href={n.href} aria-current={path===n.href?'page':undefined}>{n.label}</a>)}
+      <a class="site-brand" href={home} aria-label={t.home}><Logo id="lg-head" /></a>
+      <nav class="site-nav" aria-label={t.mainNav}>
+        {t.nav.map(([h,l])=><a href={h} aria-current={path===h?'page':undefined}>{l}</a>)}
       </nav>
       <div class="header-actions">
         <a class="header-phone" href="tel:+33787896760"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><span>07 87 89 67 60</span></a>
-        <a class="btn btn-primary btn-sm header-cta" href="/devis/">Préparer mon événement</a>
-        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-panel" data-menu-toggle><span class="sr-only">Ouvrir le menu</span><i></i><i></i></button>
+        {bilingual && <a class="lang-switch" href={otherPath} hreflang={other} lang={other} data-lang={other} title={t.switchTo}><span class="sr-only">{t.switchLabel} : </span>{t.switchShort}</a>}
+        <a class="btn btn-primary btn-sm header-cta" href={quote}>{t.cta}</a>
+        <button class="menu-toggle" type="button" data-open={t.openMenu} data-close={t.closeMenu} aria-expanded="false" aria-controls="menu-panel" data-menu-toggle><span class="sr-only">{t.openMenu}</span><i></i><i></i></button>
       </div>
     </header>
     <div class="menu-panel" id="menu-panel" data-menu hidden>
-      <nav aria-label="Menu">
-        <p class="label">Prestations</p>
-        <a href="/prestations/lavage-gobelets/">Lavage de gobelets</a>
-        <a href="/prestations/location-gobelets/">Location de gobelets</a>
-        <a href="/prestations/location-vaisselle/">Location de vaisselle</a>
-        <a href="/devis/?besoin=petits-lots">Petits événements & associations</a>
-        <p class="label">Pour qui ?</p>
-        {personas.map(p=><a href={`/pour/${p.slug}/`}>{p.nav}</a>)}
-        <p class="label">Découvrir</p>
-        <a href="/#methode">Notre méthode</a>
-        <a href="/rse/">Impact & calculateur RSE</a>
-        <a href="/entreprise-adaptee/oeth/">Entreprise adaptée & OETH</a>
-        <a href="/blog/">Guides & conseils</a>
+      <nav aria-label={t.menu}>
+        <p class="label">{t.services}</p>
+        {t.svc.map(([h,l])=><a href={h}>{l}</a>)}
+        <p class="label">{t.forWhom}</p>
+        {P.map(p=><a href={p.href}>{p.nav}</a>)}
+        <p class="label">{t.discover}</p>
+        {t.disc.map(([h,l])=><a href={h}>{l}</a>)}
+        {bilingual && <a href={otherPath} hreflang={other} lang={other} data-lang={other}>{t.switchTo}</a>}
       </nav>
       <div class="menu-actions">
-        <a class="btn btn-primary btn-lg" href="/devis/">Préparer mon événement <span aria-hidden="true">→</span></a>
-        <a class="btn btn-ghost btn-lg" href="tel:+33787896760">Appeler le 07 87 89 67 60</a>
+        <a class="btn btn-primary btn-lg" href={quote}>{t.cta} <span aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost btn-lg" href="tel:+33787896760">{t.call}</a>
       </div>
     </div>
     <main id="main"><slot /></main>
     <footer class="site-footer">
       <div class="footer-top">
-        <div class="footer-brand"><Logo id="lg-foot" variant="vertical" /><p class="footer-motto">Fluide. Profonde. Adaptée.<br /><span>Les événements passent. Les bonnes habitudes restent.</span></p></div>
+        <div class="footer-brand"><Logo id="lg-foot" variant="vertical" /><p class="footer-motto">{t.motto}<br /><span>{t.mottoSub}</span></p></div>
         <div class="footer-cols">
-          <div><p class="label">Prestations</p><a href="/prestations/lavage-gobelets/">Lavage de gobelets</a><a href="/prestations/location-gobelets/">Location de gobelets</a><a href="/prestations/location-vaisselle/">Location de vaisselle</a><a href="/devis/?besoin=petits-lots">Petits événements & associations</a><a href="/devis/?besoin=conseil">Conseil à l’achat</a><a href="/devis/?besoin=stockage">Stockage de parc</a></div>
-          <div><p class="label">Pour qui ?</p>{personas.map(p=><a href={`/pour/${p.slug}/`}>{p.nav}</a>)}</div>
-          <div><p class="label">Ressources</p><a href="/rse/">Calculateur RSE</a><a href="/entreprise-adaptee/oeth/">Entreprise adaptée & OETH</a><a href="/blog/">Guides & conseils</a><a href="/confidentialite/">Vos données</a><a href="/admin/" rel="nofollow">Espace équipe</a></div>
-          <div><p class="label">On en parle ?</p><a class="footer-big" href="tel:+33787896760">07 87 89 67 60</a><a href="mailto:accueil@laplongesadapte.com">accueil@laplongesadapte.com</a><address class="muted footer-address">La Plonge s’Adapte<br />74160 Neydens, Haute-Savoie, France<br />Interventions en Haute-Savoie, Savoie et Ain</address></div>
+          <div><p class="label">{t.services}</p>{[...t.svc,...t.footerSvcExtra].map(([h,l])=><a href={h}>{l}</a>)}</div>
+          <div><p class="label">{t.forWhom}</p>{P.map(p=><a href={p.href}>{p.nav}</a>)}</div>
+          <div><p class="label">{t.resources}</p>{t.res.map(([h,l])=><a href={h}>{l}</a>)}<a href="/admin/" rel="nofollow">{t.staff}</a>{bilingual && <a href={otherPath} hreflang={other} lang={other} data-lang={other}>{t.switchTo}</a>}</div>
+          <div><p class="label">{t.talk}</p><a class="footer-big" href="tel:+33787896760">07 87 89 67 60</a><a href="mailto:accueil@laplongesadapte.com">accueil@laplongesadapte.com</a><address class="muted footer-address">La Plonge s’Adapte<br />74160 Neydens, Haute-Savoie, {t.country}<br />{t.area}</address></div>
         </div>
       </div>
-      <div class="footer-bottom"><span>© {new Date().getFullYear()} La Plonge s’Adapte · Entreprise adaptée</span><a class="btn btn-primary btn-sm" href="/devis/">Préparer mon événement</a></div>
+      <div class="footer-bottom"><span>© {new Date().getFullYear()} La Plonge s’Adapte · {t.legal}</span><a class="btn btn-primary btn-sm" href={quote}>{t.cta}</a></div>
     </footer>
-    {!hideQuoteButton && !internal && <div class="sticky-cta" data-sticky><a class="sticky-call" href="tel:+33787896760" aria-label="Appeler le 07 87 89 67 60"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></a><a class="btn btn-primary sticky-main" href="/devis/">Préparer mon événement <span aria-hidden="true">→</span></a></div>}
+    {!hideQuoteButton && !internal && <div class="sticky-cta" data-sticky><a class="sticky-call" href="tel:+33787896760" aria-label={t.call}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></a><a class="btn btn-primary sticky-main" href={quote}>{t.cta} <span aria-hidden="true">→</span></a></div>}
     <script>
       const header=document.querySelector<HTMLElement>('[data-header]'),line=document.querySelector<HTMLElement>('.scroll-line span'),sticky=document.querySelector<HTMLElement>('[data-sticky]');
       let ticking=false;
@@ -90,10 +99,12 @@ const business={'@context':'https://schema.org','@type':'LocalBusiness',name:'La
       addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(onScroll);}},{passive:true});onScroll();
       // Mobile menu
       const toggle=document.querySelector<HTMLButtonElement>('[data-menu-toggle]'),panel=document.querySelector<HTMLElement>('[data-menu]');
-      const setMenu=(open:boolean)=>{if(!toggle||!panel)return;toggle.setAttribute('aria-expanded',String(open));toggle.querySelector('.sr-only')!.textContent=open?'Fermer le menu':'Ouvrir le menu';panel.hidden=!open;document.body.classList.toggle('menu-open',open);if(open)panel.querySelector<HTMLElement>('a')?.focus();};
+      const setMenu=(open:boolean)=>{if(!toggle||!panel)return;toggle.setAttribute('aria-expanded',String(open));toggle.querySelector('.sr-only')!.textContent=(open?toggle.dataset.close:toggle.dataset.open)||'';panel.hidden=!open;document.body.classList.toggle('menu-open',open);if(open)panel.querySelector<HTMLElement>('a')?.focus();};
       toggle?.addEventListener('click',()=>setMenu(toggle.getAttribute('aria-expanded')!=='true'));
       panel?.addEventListener('click',e=>{if((e.target as HTMLElement).closest('a'))setMenu(false);});
       addEventListener('keydown',e=>{if(e.key==='Escape'&&toggle?.getAttribute('aria-expanded')==='true'){setMenu(false);toggle.focus();}});
+      // Remember an explicit language choice (Netlify reads nf_lang before redirecting by browser language).
+      document.querySelectorAll<HTMLAnchorElement>('a[data-lang]').forEach(a=>a.addEventListener('click',()=>{document.cookie=`nf_lang=${a.dataset.lang}; path=/; max-age=31536000; samesite=lax`;}));
       // Reveal on scroll
       const items=document.querySelectorAll<HTMLElement>('[data-reveal]');
       if(matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window))items.forEach(el=>el.classList.add('is-in'));

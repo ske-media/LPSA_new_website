@@ -18,3 +18,12 @@ command = "pnpm dev"
 targetPort = 4321
 port = 8888
 framework = "#custom"
+
+# Visitors whose browser prefers English (or another non-French language) land on /en/.
+# An explicit choice made with the language switch (cookie nf_lang) always wins.
+[[redirects]]
+from = "/"
+to = "/en/"
+status = 302
+force = true
+conditions = {Language = ["en", "de", "it", "es", "nl", "pt", "pl", "sv", "da", "no", "fi", "cs", "ja", "zh", "ko", "ar", "ru", "tr"]}

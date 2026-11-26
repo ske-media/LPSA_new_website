@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Logo from '../components/Logo.astro';
+import QuoteForm from '../components/QuoteForm';
+import type {Lang} from '../i18n';
+interface Props{lang:Lang;demo:boolean}
+const {lang,demo}=Astro.props;
+const T={
+  fr:{title:'Préparer votre événement | La Plonge s’Adapte',label:'On construit la suite ensemble',h1:['Parlons de','votre événement.'],lead:'Commencez avec votre besoin et un moyen de vous joindre. Les détails peuvent venir ensuite.',
+    reassurance:['Un email ou un téléphone suffit.','Les détails peuvent venir ensuite.','Notre équipe étudie chaque demande.'],help:'Vous préférez en parler ?',phone:'07 87 89 67 60'},
+  en:{title:'Plan your event | La Plonge s’Adapte',label:'Let’s plan the next steps together',h1:['Let’s talk about','your event.'],lead:'Start with what you need and a way to reach you. The details can come later.',
+    reassurance:['An email address or phone number is enough.','The details can come later.','Our team reviews every request.'],help:'Would you rather talk it through?',phone:'+33 7 87 89 67 60'},
+}[lang];
+---
+<Layout title={T.title} privatePage hideQuoteButton lang={lang}>
+  <section class="quote-layout">
+    <aside>
+      <p class="label">{T.label}</p>
+      <h1>{T.h1[0]} <em>{T.h1[1]}</em></h1>
+      <p>{T.lead}</p>
+      <ul class="quote-reassurance">{T.reassurance.map(r=><li>{r}</li>)}</ul>
+      <p class="help">{T.help}<br /><a href="tel:+33787896760">{T.phone}</a></p>
+      <div class="quote-mark" aria-hidden="true"><Logo id="lg-quote" variant="mark" /></div>
+    </aside>
+    <QuoteForm client:load demo={demo} lang={lang} />
+  </section>
+</Layout>

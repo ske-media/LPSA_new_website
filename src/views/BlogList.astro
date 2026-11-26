@@ -1,0 +1,77 @@
+---
+// Blog hub, category pages and paginated lists, in French or English.
+import Layout from '../layouts/Layout.astro';
+import {categories,catByName,readingMinutes,dateFmt,type Cat} from '../lib/blog-structure';
+import type {Lang} from '../i18n';
+type Item={slug:string;title:string;excerpt:string;category:string;published_at:string|null;updated_at:string;content_markdown:string};
+interface Props{lang:Lang;posts:Item[];cat?:Cat;page?:number;perPage?:number;unavailable?:boolean;alternate?:string|null}
+const {lang,posts,cat,page=1,perPage=12,unavailable=false,alternate}=Astro.props;
+const en=lang==='en',base=en?'/en/blog':'/blog';
+const T={
+  fr:{label:'Les guides de La Plonge s’Adapte',h1:['Le prochain événement','se prépare ici.'],lead:'Des méthodes concrètes, des exemples à petite échelle et les bonnes questions à poser, pour les associations, les clubs, les traiteurs, les mairies et les entreprises.',all:'Tous les guides',themes:'Les thèmes',themesAria:'Thèmes des guides',pillars:'Pour bien commencer',latest:'Les derniers guides',read:'Lire le guide',min:'min de lecture',count:(n:number)=>`${n} guide${n>1?'s':''}`,search:'Rechercher un guide',searchPh:'Buvette, mariage, consigne, marché de Noël…',none:'Aucun guide ne correspond. Essayez un autre mot.',soon:'Les guides de ce thème arrivent bientôt.',unavailable:'Les articles sont temporairement indisponibles.',prev:'Page précédente',next:'Page suivante',pageOf:(p:number,n:number)=>`Page ${p} sur ${n}`,pagination:'Pagination',home:'Accueil',blog:'Guides',title:'Guides et conseils pour vos événements | La Plonge s’Adapte',desc:'Gobelets réutilisables, location de vaisselle, buvette, fête de village, mariage, RSE : des guides pratiques pour préparer vos événements.',catTitle:(c:Cat)=>`${c.title.fr} : guides et conseils | La Plonge s’Adapte`,pageTitle:(p:number)=>`Guides et conseils, page ${p} | La Plonge s’Adapte`,cta:['Une question sur votre événement ?','Gobelets, vaisselle, lavage : nous vous répondons.','Demander un devis','/devis/']},
+  en:{label:'La Plonge s’Adapte guides',h1:['Your next event','starts here.'],lead:'Practical methods, small-scale examples and the right questions to ask, for associations, clubs, caterers, town halls and companies.',all:'All guides',themes:'Topics',themesAria:'Guide topics',pillars:'Start here',latest:'Latest guides',read:'Read the guide',min:'min read',count:(n:number)=>`${n} guide${n>1?'s':''}`,search:'Search the guides',searchPh:'Bar, wedding, deposit, Christmas market…',none:'No guide matches. Try another word.',soon:'Guides on this topic are coming soon.',unavailable:'Articles are temporarily unavailable.',prev:'Previous page',next:'Next page',pageOf:(p:number,n:number)=>`Page ${p} of ${n}`,pagination:'Pagination',home:'Home',blog:'Guides',title:'Event guides and advice | La Plonge s’Adapte',desc:'Reusable cups, tableware rental, bars, village fêtes, weddings and CSR: practical guides to prepare your events near Geneva.',catTitle:(c:Cat)=>`${c.title.en}: guides and advice | La Plonge s’Adapte`,pageTitle:(p:number)=>`Guides and advice, page ${p} | La Plonge s’Adapte`,cta:['A question about your event?','Cups, tableware, washing: we are here to help.','Request a quote','/en/devis/']},
+}[lang];
+const sorted=[...posts].sort((a,b)=>(b.published_at??b.updated_at).localeCompare(a.published_at??a.updated_at));
+const inCat=cat?sorted.filter(p=>catByName(p.category).slug===cat.slug):sorted;
+const totalPages=Math.max(1,Math.ceil(inCat.length/perPage));
+const visible=cat?inCat:inCat.slice((page-1)*perPage,page*perPage);
+const counts=Object.fromEntries(categories.map(c=>[c.slug,sorted.filter(p=>catByName(p.category).slug===c.slug).length]));
+// Pillar guides: the longest article of each topic, shown on the hub's first page.
+const pillars=!cat&&page===1?categories.map(c=>sorted.filter(p=>catByName(p.category).slug===c.slug).sort((a,b)=>b.content_markdown.length-a.content_markdown.length)[0]).filter(Boolean):[];
+const title=cat?T.catTitle(cat):page>1?T.pageTitle(page):T.title;
+const description=cat?cat.intro[lang]:T.desc;
+const pageHref=(n:number)=>n===1?`${base}/`:`${base}/page/${n}/`;
+const searchIndex=!cat&&page===1?JSON.stringify(sorted.map(p=>({s:p.slug,t:p.title,e:p.excerpt,c:catByName(p.category)[lang]}))).replace(/</g,'\\u003c'):'';
+const crumbs=[{name:T.home,url:en?'/en/':'/'},{name:T.blog,url:`${base}/`},...(cat?[{name:cat.title[lang],url:`${base}/categorie/${cat.slug}/`}]:[])];
+const ld={'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:crumbs.map((c,i)=>({'@type':'ListItem',position:i+1,name:c.name,item:`https://laplongesadapte.com${c.url}`}))};
+const card=(p:Item)=>({href:`${base}/${p.slug}/`,c:catByName(p.category)});
+---
+<Layout title={title} description={description} lang={lang} privatePage={unavailable} alternate={alternate}>
+  {(cat||page>1)&&<script type="application/ld+json" set:html={JSON.stringify(ld)} />}
+  <section class="page-hero blog-hero">
+    {(cat||page>1)&&<p class="crumb">{crumbs.map((c,i)=>i<crumbs.length-1?<><a href={c.url}>{c.name}</a> / </>:<span>{c.name}</span>)}</p>}
+    <p class="label">{cat?T.themes:T.label}</p>
+    {cat?<h1>{cat.title[lang]}</h1>:<h1>{T.h1[0]} <em>{T.h1[1]}</em></h1>}
+    <p class="lead">{cat?cat.intro[lang]:T.lead}</p>
+    {searchIndex&&<div class="blog-search" data-blog-search><label class="catalog-search"><span class="sr-only">{T.search}</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" placeholder={T.searchPh} aria-label={T.search} /></label><ul class="search-results" hidden></ul><p class="search-none" hidden>{T.none}</p><script type="application/json" set:html={searchIndex} /></div>}
+  </section>
+
+  <section class="section blog-index" style="padding-top:0">
+    <nav class="blog-categories" aria-label={T.themesAria}>
+      <a href={`${base}/`} aria-current={!cat?'page':undefined}>{T.all} <span>{sorted.length}</span></a>
+      {categories.filter(c=>counts[c.slug]>0).map(c=><a href={`${base}/categorie/${c.slug}/`} aria-current={cat?.slug===c.slug?'page':undefined}>{c[lang]} <span>{counts[c.slug]}</span></a>)}
+    </nav>
+    {unavailable?<p class="notice">{T.unavailable}</p>:<>
+      {pillars.length>0&&<><h2 class="blog-subhead">{T.pillars}</h2><div class="pillar-grid">{pillars.map((p,i)=>{const {href,c}=card(p);return <a class:list={['card','pillar',{'pillar-main':i===0}]} href={href} data-reveal style={`--d:${i*.06}s`}><span class="solution-icon"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={c.icon} /></span><span class="chip">{c[lang]}</span><h3>{p.title}</h3>{i===0&&<p>{p.excerpt}</p>}<span class="card-cta">{T.read} <span aria-hidden="true">→</span></span></a>;})}</div></>}
+      {!cat&&page===1&&<div class="theme-grid">{categories.filter(c=>counts[c.slug]>0).map(c=><a class="card theme" href={`${base}/categorie/${c.slug}/`}><span class="solution-icon"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={c.icon} /></span><h3>{c.title[lang]}</h3><p>{c.intro[lang]}</p><span class="card-cta">{T.count(counts[c.slug])} <span aria-hidden="true">→</span></span></a>)}</div>}
+      {visible.length===0?<p class="notice">{T.soon}</p>:<>
+        {!cat&&<h2 class="blog-subhead">{T.latest}</h2>}
+        <div class="cards blog-grid">{visible.map(p=>{const {href,c}=card(p);return <a href={href} class="card blog-card"><span class="chip">{c[lang]}</span><h3>{p.title}</h3><p>{p.excerpt}</p><span class="blog-card-meta">{p.published_at&&<time datetime={p.published_at}>{dateFmt(p.published_at,lang)}</time>} · {readingMinutes(p.content_markdown)} {T.min}</span><span class="card-cta">{T.read} <span aria-hidden="true">→</span></span></a>;})}</div>
+      </>}
+      {!cat&&totalPages>1&&<nav class="pagination" aria-label={T.pagination}>
+        {page>1?<a class="btn btn-ghost btn-sm" href={pageHref(page-1)} rel="prev">← {T.prev}</a>:<span></span>}
+        <span class="page-of">{T.pageOf(page,totalPages)}</span>
+        <span class="page-links">{Array.from({length:totalPages},(_,i)=>i+1).map(n=><a href={pageHref(n)} aria-current={n===page?'page':undefined}>{n}</a>)}</span>
+        {page<totalPages?<a class="btn btn-ghost btn-sm" href={pageHref(page+1)} rel="next">{T.next} →</a>:<span></span>}
+      </nav>}
+      <div class="band-cta blog-band" data-reveal><h2>{T.cta[0]} <em>{T.cta[1]}</em></h2><div class="cta-row"><a class="btn btn-primary btn-lg" href={T.cta[3]}>{T.cta[2]} <span aria-hidden="true">→</span></a></div></div>
+    </>}
+  </section>
+</Layout>
+<script>
+  // Instant search over the guides (index embedded in the hub page).
+  const box=document.querySelector<HTMLElement>('[data-blog-search]');
+  if(box){
+    const data:{s:string;t:string;e:string;c:string}[]=JSON.parse(box.querySelector('script')!.textContent||'[]');
+    const input=box.querySelector('input')!,list=box.querySelector<HTMLUListElement>('.search-results')!,none=box.querySelector<HTMLElement>('.search-none')!;
+    const base=location.pathname.startsWith('/en/')?'/en/blog':'/blog';
+    const norm=(s:string)=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+    input.addEventListener('input',()=>{
+      const q=norm(input.value.trim());list.innerHTML='';
+      if(q.length<2){list.hidden=true;none.hidden=true;return;}
+      const words=q.split(/\s+/);const hits=data.filter(d=>{const h=norm(`${d.t} ${d.e} ${d.c}`);return words.every(w=>h.includes(w));}).slice(0,8);
+      for(const h of hits){const li=document.createElement('li'),a=document.createElement('a');a.href=`${base}/${h.s}/`;const c=document.createElement('span');c.textContent=h.c;const t=document.createElement('strong');t.textContent=h.t;a.append(c,t);li.append(a);list.append(li);}
+      list.hidden=hits.length===0;none.hidden=hits.length>0;
+    });
+  }
+</script>

@@ -1,0 +1,6 @@
+---
+import Service from '../../../views/Service.astro';
+import {serviceSlugs,type ServiceSlug} from '../../../views/service-text';
+export function getStaticPaths(){return serviceSlugs.map(service=>({params:{service}}));}
+---
+<Service lang="en" service={Astro.params.service as ServiceSlug} />

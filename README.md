@@ -97,3 +97,14 @@ En l’absence de configuration de base, seules les lectures publiques du blog u
 - Titres de 60 caractères environ et descriptions de 155 au plus. Données structurées : entreprise locale (avec catalogue de prestations), services, FAQ, fil d’Ariane, articles.
 - `public/robots.txt` autorise explicitement les robots des moteurs et des assistants IA (OAI-SearchBot, GPTBot, PerplexityBot, ClaudeBot, Google-Extended…) ; `public/llms.txt` résume l’entreprise et ses pages pour les IA. Le mettre à jour quand une page ou un guide est ajouté.
 - Plan du site avec dates de mise à jour.
+
+## Site bilingue (français / anglais)
+- Français à la racine, anglais sous `/en/` avec les mêmes adresses (`/en/prestations/location-vaisselle/`…). Textes de l’interface commune : `src/i18n/index.ts` ; pages : `src/views/*.astro` (+ fichiers de textes), routes fines dans `src/pages/` et `src/pages/en/`.
+- Détection automatique : `netlify.toml` redirige la page d’accueil `/` vers `/en/` quand la langue préférée du navigateur n’est pas le français. Le sélecteur FR/EN enregistre le choix dans le cookie `nf_lang`, que Netlify respecte ensuite.
+- Balises `hreflang` sur chaque page qui existe dans les deux langues, plan du site bilingue. Les articles disponibles uniquement en français n’annoncent pas de version anglaise.
+- Le formulaire envoie la langue (`langue`) à Netlify Forms ; les libellés transmis à l’équipe restent en français.
+
+## Blog : structure et articles injectés
+- Accueil du blog (`/blog/`) : articles piliers, thèmes, derniers guides, recherche instantanée, pagination (`/blog/page/2/`). Pages thèmes : `/blog/categorie/<gobelets|vaisselle|guides|collectivites|rse>/`. Articles : fil d’Ariane, sommaire, FAQ en données structurées, encart d’action selon le thème, articles liés.
+- Articles injectés en JSON : `src/content/blog/batches/batch-0N.json` (enregistrements complets, Markdown compris), chargés avec les 10 articles de lancement. Dates fixées par `node scripts/schedule-blog-batches.mjs <date de départ> <nombre publié d’emblée>` : une partie publiée tout de suite, le reste trois fois par semaine (lundi, mercredi, vendredi), mis en ligne automatiquement à la date prévue.
+- Si Supabase est branché, le CMS fait autorité : importer `supabase/seeds/blog-batches.sql` (généré par le même script, ne remplace jamais un article existant).

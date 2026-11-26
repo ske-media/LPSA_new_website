@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+import type {Lang} from '../i18n';
+interface Props{lang:Lang}
+const {lang}=Astro.props;
+const T={
+  fr:{title:'Vos données | La Plonge s’Adapte',label:'Version de développement',h1:['Vos données,','votre demande.'],
+    p:['Les coordonnées transmises servent à préparer et suivre votre demande de prestation auprès de La Plonge s’Adapte. Elles sont accessibles aux personnes autorisées de l’équipe commerciale. Une demande commencée est enregistrée lorsque vous cliquez sur « Transmettre mes coordonnées ».','Le formulaire est traité par l’hébergeur du site, Netlify, qui enregistre les demandes pour le compte de La Plonge s’Adapte.'],
+    rights:'Vous pouvez demander l’accès, la rectification ou l’effacement de vos données à ',
+    notice:'Cette page provisoire accompagne la version de développement. L’identité juridique complète, les durées de conservation, les destinataires et les modalités d’exercice des droits seront précisés avant une ouverture publique.'},
+  en:{title:'Your data | La Plonge s’Adapte',label:'Development version',h1:['Your data,','your request.'],
+    p:['The contact details you send us are used to prepare and follow up your service request with La Plonge s’Adapte. They can be accessed by authorised members of the sales team. A request you have started is saved when you click “Send my contact details”.','The form is processed by the website host, Netlify, which stores requests on behalf of La Plonge s’Adapte.'],
+    rights:'You can ask to access, correct or delete your data by writing to ',
+    notice:'This provisional page accompanies the development version. The full legal identity, retention periods, recipients and how to exercise your rights will be set out before the site opens to the public.'},
+}[lang];
+---
+<Layout title={T.title} privatePage lang={lang}><section class="legal"><p class="label">{T.label}</p><h1>{T.h1[0]} <em>{T.h1[1]}</em></h1><p>{T.p[0]}</p><p>{T.p[1]}</p><p>{T.rights}<a href="mailto:accueil@laplongesadapte.com">accueil@laplongesadapte.com</a>.</p><p class="notice">{T.notice}</p></section></Layout>

@@ -1,0 +1,7 @@
+---
+import Persona from '../../../views/Persona.astro';
+import {personasEn} from '../../../data/personas-en';
+export function getStaticPaths(){return personasEn.map(p=>({params:{persona:p.slug},props:{p}}));}
+const {p}=Astro.props;
+---
+<Persona p={p} lang="en" />

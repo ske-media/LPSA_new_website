@@ -6,7 +6,7 @@ Pour dimensionner un grand événement, distinguez deux chiffres : le volume tot
 
 Utilisez les historiques de bar lorsqu’ils existent : ventes par créneau, formats utilisés, fréquentation des différentes zones et différences entre les jours. Pour une première édition, construisez plusieurs scénarios plutôt qu’un coefficient unique présenté comme certain.
 
-Les pics comptent davantage qu’une moyenne quotidienne. Dix mille boissons réparties sur dix heures ne créent pas la même pression qu’un pic de dix mille services après un concert. Les bars éloignés et les accès de livraison doivent également être pris en compte.
+Les pics comptent davantage qu’une moyenne quotidienne. Le même nombre de boissons réparti sur dix heures ne crée pas la même pression qu’un pic de services concentré après un concert. Les bars éloignés et les accès de livraison doivent également être pris en compte.
 
 Le total prévisionnel aide à estimer le lavage. Le pic de consommation, associé au délai de retour du propre, aide à estimer le parc.
 

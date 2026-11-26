@@ -1,0 +1,9 @@
+---
+import Article from '../../../views/Article.astro';
+import {editorialPostsEn} from '../../../lib/editorial-en';
+export function getStaticPaths(){return editorialPostsEn.map(post=>({params:{slug:post.slug},props:{post}}));}
+const {post}=Astro.props;
+const others=editorialPostsEn.filter(p=>p.slug!==post.slug);
+const related=[...others.filter(p=>p.category===post.category),...others.filter(p=>p.category!==post.category)].slice(0,3);
+---
+<Article lang="en" post={post} related={related} alternate={`/blog/${post.slug}/`} />

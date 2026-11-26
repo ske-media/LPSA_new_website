@@ -1,6 +1,6 @@
 Un festival ne se termine pas au dernier rappel. Derrière les bars, il reste des caisses à récupérer, des gobelets à compter et une équipe qui a déjà beaucoup donné. Préparer leur lavage avant l’ouverture permet de rendre cette dernière étape prévisible.
 
-Pour un événement qui mobilise plusieurs dizaines de milliers de gobelets, le sujet dépasse la plonge : il faut organiser un flux entre le service, les retours, le lavage et le prochain usage.
+Dès qu’un événement mobilise beaucoup de gobelets, le sujet dépasse la plonge : il faut organiser un flux entre le service, les retours, le lavage et le prochain usage.
 
 ## Commencer par le calendrier de remise à disposition
 

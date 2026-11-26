@@ -28,7 +28,7 @@ La distance compte également, mais elle ne décrit pas tout le transport. Le v�
 
 ## Éviter les équivalences trop rapides
 
-« Cent mille utilisations » ne signifie pas automatiquement « cent mille gobelets jetables évités ». Cette équivalence nécessite un scénario de référence : quel contenant aurait été utilisé sans le parc, et un contenant jetable aurait-il servi une ou plusieurs fois ?
+Un grand nombre d’utilisations ne signifie pas automatiquement autant de gobelets jetables évités. Cette équivalence nécessite un scénario de référence : quel contenant aurait été utilisé sans le parc, et un contenant jetable aurait-il servi une ou plusieurs fois ?
 
 De même, une baisse de déchets observée ne suffit pas à chiffrer des économies de CO₂. Une analyse de cycle de vie examine notamment la fabrication, les usages, le lavage, le transport et la fin de vie.
 

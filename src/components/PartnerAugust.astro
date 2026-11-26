@@ -1,21 +1,34 @@
 ---
 // Partner block: La Plonge s'Adapte × August Events. Facts from august-events.fr (about page, footer).
 import Logo from './Logo.astro';
-interface Props { id:string; compact?:boolean }
-const {id,compact=false}=Astro.props;
+import type {Lang} from '../i18n';
+interface Props { id:string; compact?:boolean; lang?:Lang }
+const {id,compact=false,lang='fr'}=Astro.props;
+const T={
+  fr:{label:'Notre partenaire',h2:['August Events,','l’art de recevoir.'],alt:'August Events, location événementielle',
+    lead:'Depuis 2015, August Events habille les plus belles réceptions de la région. Une maison familiale née à Reyrieux, dans l’Ain, qui a fait de la location de vaisselle un véritable savoir-faire : porcelaine, verrerie fine, couverts dorés ou cuivrés, pièces vintage, choisis avec un goût très sûr.',
+    p:'Mariages, réceptions privées, événements professionnels : leurs collections de vaisselle conjuguent élégance et fiabilité, et leurs clients saluent une équipe accueillante et réactive. Avec leurs agences de l’Ain, de Haute-Savoie à La Roche-sur-Foron et de Bourgogne, ils sont tout proches de vos événements.',
+    together:['Ensemble, nous réunissons ','leur vaisselle d’exception',' et ','notre métier du lavage',' : une vaisselle superbe à table, et plus rien à gérer après le service.'],
+    cta:'Découvrir la vaisselle',cta2:'Parcourir le catalogue',href:'/prestations/location-vaisselle/'},
+  en:{label:'Our partner',h2:['August Events,','the art of hosting.'],alt:'August Events, event rental',
+    lead:'Since 2015, August Events has been dressing some of the finest receptions in the region. A family business founded in Reyrieux, in the Ain, that has turned tableware rental into a true craft: porcelain, fine glassware, gold or copper cutlery and vintage pieces, chosen with a sure eye.',
+    p:'Weddings, private receptions, corporate events: their tableware collections combine elegance and reliability, and their clients praise a welcoming, responsive team. With branches in the Ain, in Haute-Savoie at La Roche-sur-Foron and in Burgundy, they are close to your events.',
+    together:['Together, we bring ','their exceptional tableware',' and ','our washing expertise',': beautiful tableware on the table, and nothing left to handle after the meal.'],
+    cta:'Discover tableware',cta2:'Browse the catalogue',href:'/en/prestations/location-vaisselle/'},
+}[lang];
 ---
 <section class:list={['partner',{compact}]} aria-labelledby={`${id}-title`}>
   <div class="partner-logos" data-reveal>
     <Logo id={`${id}-lpsa`} variant="vertical" />
     <span class="partner-x" aria-hidden="true">×</span>
-    <img src="/partners/august-events/logo-blanc.webp" alt="August Events, location événementielle" width="480" height="385" loading="lazy" />
+    <img src="/partners/august-events/logo-blanc.webp" alt={T.alt} width="480" height="385" loading="lazy" />
   </div>
   <div class="partner-text" data-reveal style="--d:.1s">
-    <p class="label partner-label">Notre partenaire</p>
-    <h2 id={`${id}-title`}>August Events, <em>l’art de recevoir.</em></h2>
-    <p class="lead">Depuis 2015, August Events habille les plus belles réceptions de la région. Une maison familiale née à Reyrieux, dans l’Ain, qui a fait de la location de vaisselle un véritable savoir-faire : porcelaine, verrerie fine, couverts dorés ou cuivrés, pièces vintage, choisis avec un goût très sûr.</p>
-    {!compact&&<p>Mariages, réceptions privées, événements professionnels : leurs collections de vaisselle conjuguent élégance et fiabilité, et leurs clients saluent une équipe accueillante et réactive. Avec leurs agences de l’Ain, de Haute-Savoie à La Roche-sur-Foron et de Bourgogne, ils sont tout proches de vos événements.</p>}
-    <p>Ensemble, nous réunissons <strong>leur vaisselle d’exception</strong> et <strong>notre métier du lavage</strong> : une vaisselle superbe à table, et plus rien à gérer après le service.</p>
-    {compact&&<div class="cta-row"><a class="btn btn-primary" href="/prestations/location-vaisselle/">Découvrir la vaisselle <span aria-hidden="true">→</span></a><a class="btn btn-ghost" href="/prestations/location-vaisselle/#catalogue">Parcourir le catalogue</a></div>}
+    <p class="label partner-label">{T.label}</p>
+    <h2 id={`${id}-title`}>{T.h2[0]} <em>{T.h2[1]}</em></h2>
+    <p class="lead">{T.lead}</p>
+    {!compact&&<p>{T.p}</p>}
+    <p>{T.together[0]}<strong>{T.together[1]}</strong>{T.together[2]}<strong>{T.together[3]}</strong>{T.together[4]}</p>
+    {compact&&<div class="cta-row"><a class="btn btn-primary" href={T.href}>{T.cta} <span aria-hidden="true">→</span></a><a class="btn btn-ghost" href={`${T.href}#catalogue`}>{T.cta2}</a></div>}
   </div>
 </section>

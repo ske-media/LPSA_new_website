@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ImpactCalculator from '../components/ImpactCalculator';
+import Logo from '../components/Logo.astro';
+import type {Lang} from '../i18n';
+interface Props{lang:Lang}
+const {lang}=Astro.props;
+const L=(p:string)=>lang==='en'?`/en${p}`:p;
+const T={
+  fr:{title:'Réemploi, entreprise adaptée et calculateur RSE | LPSA',description:'Préparez un scénario de réemploi de gobelets et comprenez la déduction OETH liée à vos achats auprès d’une entreprise adaptée.',
+    label:'Une organisation qui a du sens',h1:['Le réemploi se prépare.','L’engagement se concrétise.'],lead:'Faire durer les contenants et soutenir l’emploi : deux dimensions de votre démarche RSE, à comprendre avec des hypothèses claires.',
+    h2:['Le service et l’engagement,','dans la même prestation.'],
+    p:['La Plonge s’Adapte est une entreprise adaptée. Confier vos gobelets ou votre vaisselle à notre équipe soutient une activité professionnelle qui favorise l’emploi de personnes en situation de handicap.','Pour le réemploi, notre rôle est de préparer le lavage, les rotations et le conditionnement. Un bilan environnemental chiffré nécessite des données sur les modèles, leur fabrication, les transports, les lavages et les pertes. Le calculateur présente un scénario de volumes ; il ne remplace pas cette étude.'],
+    links:['Entreprise adaptée : comprendre la déduction OETH ↗','Quels indicateurs suivre après votre événement ? ↗','Lire un exemple de déduction OETH ↗']},
+  en:{title:'Reuse, inclusive employment and CSR calculator | LPSA',description:'Build a reusable cup scenario and understand the OETH deduction linked to purchases from a French entreprise adaptée (disability-inclusive company).',
+    label:'An approach that makes sense',h1:['Reuse takes planning.','Commitment becomes real.'],lead:'Making cups and tableware last and supporting employment: two sides of your CSR approach, explained with clear assumptions.',
+    h2:['The service and the commitment,','in a single order.'],
+    p:['La Plonge s’Adapte is an entreprise adaptée, a French company employing mainly people with disabilities. Entrusting your cups or tableware to our team supports a business that creates jobs for people with disabilities.','For reuse, our role is to organise the washing, the rotations and the packing. A quantified environmental assessment requires data on the cup models, how they are made, transport, washing and losses. The calculator shows a volume scenario; it does not replace such a study.'],
+    links:['Entreprise adaptée: understanding the OETH deduction ↗','Which indicators should you track after your event? ↗','Read a worked example of an OETH deduction ↗']},
+}[lang];
+---
+<Layout title={T.title} description={T.description} lang={lang}><section class="page-hero"><div class="hero-mark" aria-hidden="true"><Logo id="lg-rse" variant="mark" /></div><p class="label">{T.label}</p><h1>{T.h1[0]} <em>{T.h1[1]}</em></h1><p class="lead">{T.lead}</p></section><section class="section impact-page" style="padding-top:0"><ImpactCalculator client:visible lang={lang} /><div class="impact-explanation"><h2>{T.h2[0]} <em>{T.h2[1]}</em></h2><p>{T.p[0]}</p><p>{T.p[1]}</p><a class="text-link" href={L('/entreprise-adaptee/oeth/')}>{T.links[0]}</a><p><a class="text-link" href={L('/blog/rse-gobelets-reemploi-indicateurs/')}>{T.links[1]}</a></p><p><a class="text-link" href={L('/blog/entreprise-adaptee-oeth-lavage-gobelets/')}>{T.links[2]}</a></p></div></section></Layout>

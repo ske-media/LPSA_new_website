@@ -4,7 +4,7 @@ La Plonge s’Adapte propose ce service avec des partenaires de transport. Le tr
 
 ## Décrire ce qui doit réellement être transporté
 
-Un volume de 50 000 gobelets ne suffit pas à décrire un enlèvement. Il faut connaître les formats, le nombre de caisses ou cartons, leurs dimensions, leur poids et la présence éventuelle de palettes.
+Un nombre total de gobelets ne suffit pas à décrire un enlèvement. Il faut connaître les formats, le nombre de caisses ou cartons, leurs dimensions, leur poids et la présence éventuelle de palettes.
 
 Précisez qui fournit les contenants de transport et s’ils servent au retour du propre. Les emballages doivent être adaptés au circuit prévu, aux manipulations et aux consignes du prestataire. Une caisse remplie différemment d’un lot à l’autre peut fausser une estimation basée sur le nombre de caisses.
 

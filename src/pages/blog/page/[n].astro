@@ -1,0 +1,13 @@
+---
+import BlogList from '../../../views/BlogList.astro';
+import {listPosts} from '../../../lib/blog-server';
+export const prerender=false;
+const n=Number(Astro.params.n);
+if(!Number.isInteger(n)||n<1)return new Response(null,{status:404});
+if(n===1)return Astro.redirect('/blog/',301);
+const posts=await listPosts(true).catch(()=>null);
+if(!posts)return new Response('Indisponible',{status:503});
+if(n>Math.ceil(posts.length/12))return Astro.redirect('/blog/',302);
+Astro.response.headers.set('Cache-Control','public, max-age=0, s-maxage=600');
+---
+<BlogList lang="fr" posts={posts} page={n} alternate={null} />

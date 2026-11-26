@@ -1,0 +1,8 @@
+---
+import BlogList from '../../../../views/BlogList.astro';
+import {categories,catByName} from '../../../../lib/blog-structure';
+import {editorialPostsEn} from '../../../../lib/editorial-en';
+export function getStaticPaths(){return categories.filter(c=>editorialPostsEn.some(p=>catByName(p.category).slug===c.slug)).map(cat=>({params:{cat:cat.slug},props:{cat}}));}
+const {cat}=Astro.props;
+---
+<BlogList lang="en" posts={editorialPostsEn} cat={cat} alternate={`/blog/categorie/${cat.slug}/`} />

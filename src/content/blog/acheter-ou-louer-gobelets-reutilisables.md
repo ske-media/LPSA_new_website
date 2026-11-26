@@ -43,6 +43,6 @@ Vous pouvez posséder un parc adapté à vos besoins habituels et louer un compl
 
 Combien de fois utiliserez-vous réellement le parc cette année ? Qui prendra en charge son stockage et ses inventaires ? Quel calendrier de lavage garantit le stock nécessaire aux prochaines dates ?
 
-Si ces réponses sont claires, le choix financier devient plus lisible. Si elles restent ouvertes, préparez l’organisation avec votre prestataire avant de commander plusieurs dizaines de milliers de pièces.
+Si ces réponses sont claires, le choix financier devient plus lisible. Si elles restent ouvertes, préparez l’organisation avec votre prestataire avant de commander un grand nombre de pièces.
 
 [Étudier la location](/prestations/location-gobelets/) ou [être accompagné pour choisir un parc](/devis/?besoin=conseil).

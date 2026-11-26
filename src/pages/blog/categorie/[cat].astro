@@ -1,0 +1,14 @@
+---
+import BlogList from '../../../views/BlogList.astro';
+import {listPosts} from '../../../lib/blog-server';
+import {catBySlug,catByName} from '../../../lib/blog-structure';
+import {editorialPostsEn} from '../../../lib/editorial-en';
+export const prerender=false;
+const cat=catBySlug(Astro.params.cat||'');
+if(!cat)return Astro.redirect('/blog/',302);
+const posts=await listPosts(true).catch(()=>null);
+if(!posts)return new Response('Indisponible',{status:503});
+const twin=editorialPostsEn.some(p=>catByName(p.category).slug===cat.slug)?`/en/blog/categorie/${cat.slug}/`:null;
+Astro.response.headers.set('Cache-Control','public, max-age=0, s-maxage=600');
+---
+<BlogList lang="fr" posts={posts} cat={cat} alternate={twin} />

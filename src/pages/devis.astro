@@ -1,20 +1,6 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Logo from '../components/Logo.astro';
-import QuoteForm from '../components/QuoteForm';
+import Devis from '../views/Devis.astro';
 import {demo} from '../lib/server';
 export const prerender=false;
 ---
-<Layout title="Préparer votre événement | La Plonge s’Adapte" privatePage hideQuoteButton>
-  <section class="quote-layout">
-    <aside>
-      <p class="label">On construit la suite ensemble</p>
-      <h1>Parlons de <em>votre événement.</em></h1>
-      <p>Commencez avec votre besoin et un moyen de vous joindre. Les détails peuvent venir ensuite.</p>
-      <ul class="quote-reassurance"><li>Un email ou un téléphone suffit.</li><li>Les détails peuvent venir ensuite.</li><li>Notre équipe étudie chaque demande.</li></ul>
-      <p class="help">Vous préférez en parler ?<br /><a href="tel:+33787896760">07 87 89 67 60</a></p>
-      <div class="quote-mark" aria-hidden="true"><Logo id="lg-quote" variant="mark" /></div>
-    </aside>
-    <QuoteForm client:load demo={demo} />
-  </section>
-</Layout>
+<Devis lang="fr" demo={demo} />

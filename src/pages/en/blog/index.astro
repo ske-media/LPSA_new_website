@@ -1,0 +1,6 @@
+---
+import BlogList from '../../../views/BlogList.astro';
+import {editorialPostsEn} from '../../../lib/editorial-en';
+const posts=editorialPostsEn.filter(p=>p.status!=='draft'&&p.published_at&&new Date(p.published_at).getTime()<=Date.now());
+---
+<BlogList lang="en" posts={posts} alternate="/blog/" />

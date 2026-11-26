@@ -52,11 +52,33 @@ test('audience pages carry their own arguments, structured data and profile to t
   expect(await (await request.get('/sitemap.xml')).text()).toContain('/pour/collectivites-mairies/');
 });
 test('public pages never show a volume above 3 000, so small organisations feel welcome',async({page})=>{
-  const pages=['/','/prestations/lavage-gobelets/','/prestations/location-gobelets/','/prestations/location-vaisselle/','/rse/','/blog/','/blog/combien-gobelets-prevoir-evenement/','/blog/lavage-gobelets-festival/','/blog/prix-lavage-gobelets/','/pour/clubs-sportifs/','/pour/restaurants-entreprise/','/pour/traiteurs/','/pour/comites-des-fetes/','/pour/collectivites-mairies/'];
+  const fr=['/','/prestations/lavage-gobelets/','/prestations/location-gobelets/','/prestations/location-vaisselle/','/rse/','/blog/','/blog/combien-gobelets-prevoir-evenement/','/blog/lavage-gobelets-festival/','/blog/prix-lavage-gobelets/','/blog/collecte-livraison-gobelets-evenement/','/blog/rse-gobelets-reemploi-indicateurs/','/blog/acheter-ou-louer-gobelets-reutilisables/','/pour/clubs-sportifs/','/pour/restaurants-entreprise/','/pour/traiteurs/','/pour/comites-des-fetes/','/pour/collectivites-mairies/'];
+  const pages=[...fr,...fr.map(u=>`/en${u}`)];
   for(const url of pages){
     await page.goto(url);await page.waitForTimeout(400);
     const text=(await page.locator('main').innerText()).replace(/0\d(?:[ .]\d{2}){4}/g,'');
     const numbers=[...text.matchAll(/(\d{1,3}(?:[   ]\d{3})+|\d{4,})(?!\s*(?:€|°|cl|cm|L\b))/g)].map(m=>Number(m[1].replace(/\D/g,''))).filter(n=>n<2000||n>2030);
     expect(numbers.filter(n=>n>3000),url).toEqual([]);
+    expect(text,url).not.toMatch(/dizaines de milliers|des milliers de gobelets|cent mille|dix mille|tens of thousands|thousands of cups/i);
   }
+});
+test('English site: language, alternates, switch and translated quote form',async({page})=>{
+  await page.goto('/en/');
+  await expect(page.locator('html')).toHaveAttribute('lang','en');
+  await expect(page.locator('link[rel=alternate][hreflang=fr]')).toHaveAttribute('href',/laplongesadapte\.com\/$/);
+  await expect(page.getByRole('heading',{level:1})).toContainText('The crowd has gone');
+  await page.locator('.lang-switch').click();await expect(page).toHaveURL(/127\.0\.0\.1:4321\/$/);
+  expect((await page.context().cookies()).find(c=>c.name==='nf_lang')?.value).toBe('fr');
+  await page.goto('/en/devis/');await expect(page.getByRole('heading',{name:/What do you need/i})).toBeVisible();
+  await page.goto('/en/pour/traiteurs/');await expect(page.getByRole('link',{name:'Request a quote'}).first()).toHaveAttribute('href',/^\/en\/devis\/\?besoin=vaisselle&profil=traiteurs/);
+});
+test('blog hub, topic pages and articles are structured for search',async({page,request})=>{
+  await page.goto('/blog/');
+  await expect(page.getByRole('navigation',{name:'Thèmes des guides'}).getByRole('link',{name:/Gobelets/})).toHaveAttribute('href','/blog/categorie/gobelets/');
+  await page.locator('[data-blog-search] input').fill('marché noël');await expect(page.locator('.search-results a').first()).toBeVisible();
+  expect((await request.get('/blog/?categorie=Vaisselle',{maxRedirects:0})).headers()['location']).toBe('/blog/categorie/vaisselle/');
+  await page.goto('/blog/categorie/vaisselle/');await expect(page.getByRole('heading',{level:1})).toHaveText('Vaisselle et réceptions');
+  const html=await (await request.get('/blog/combien-gobelets-prevoir-evenement/')).text();
+  for(const t of ['"BreadcrumbList"','"BlogPosting"','class="toc','hreflang="en"'])expect(html).toContain(t);
+  await page.goto('/en/blog/combien-gobelets-prevoir-evenement/');await expect(page.locator('html')).toHaveAttribute('lang','en');
 });
